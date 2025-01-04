@@ -82,12 +82,12 @@ const DesktopNav = ()=>{
           <Link>Offer</Link>
         </Flex>
         <Button
-          position={{
-            md: "absolute",
-            lg:"block"
-          }}
-          right={"0"}
-          bottom={"0"}
+          // position={{
+          //   base: "absolute",
+          //   lg:"block"
+          // }}
+          // right={0}
+          // bottom={0}
           rounded={{
             base: "4xl"
           }}
