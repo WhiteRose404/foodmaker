@@ -1,31 +1,19 @@
 "use client";
 
-import { Button, Link } from "@chakra-ui/react";
+import FoodSmallButton from "./food-small-button";
+import FoodBigButton from "./food-big-button";
 
-export default function({ children }: { text?: string, children?: any}){
+export default function({ children, small=true }: { small?: boolean; text?: string, children?: any}){
+    if(small){
+        return (
+            <FoodSmallButton>
+                {children}
+            </FoodSmallButton>
+        )
+    }
     return (
-        <Button
-            as={Link}
-            fontWeight={"semibold"}
-            color={"#FF006B"}
-            bg={"#ffedf4"}
-            rounded={{
-                base: "3xl"
-            }}
-            fontSize={{
-                base: "0.85rem"
-            }}
-            px={{
-                base: 3
-            }}
-            maxH={{
-                base: "2rem"
-            }}
-            mt={{
-                base: "auto"
-            }}
-        >
+        <FoodBigButton>
             {children}
-        </Button>
+        </FoodBigButton>
     )
 }

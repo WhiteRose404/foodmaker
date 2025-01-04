@@ -116,7 +116,7 @@ const DesktopNav = ()=>{
         <DrawerRoot size={"full"}>
           <DrawerBackdrop />
           <DrawerTrigger asChild>
-            <IconButton variant="surface" size="lg" bg={{ base: "gray.100"}} display={{ base: "block", lg: "none"}}>
+            <IconButton variant="surface" size="lg" bg={{ base: "gray.100"}} display={{ base: "block", md: "none"}}>
               <CiMenuBurger />
             </IconButton>
           </DrawerTrigger>

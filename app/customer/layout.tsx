@@ -13,22 +13,28 @@ export default function RootLayout({
   return (
     <>
         <Box
-            py={{
-              base: 3
-            }}
-            borderBottom={{
-              base: "1px solid #00000010"
-            }}
-            boxShadow={{
-              base: "0 0 #0000, 0px 6px 32px 0px rgba(0, 0, 0, .04)",
-            }}
+          py={{
+            base: 3
+          }}
+          borderBottom={{
+            base: "1px solid #00000010"
+          }}
+          bg={"white"}
+          boxShadow={{
+            base: "0 0 #0000, 0px 6px 32px 0px rgba(0, 0, 0, .04)",
+          }}
+          position={"sticky"}
+          top={"0px"}
+          zIndex={100}
         >
             <Nav />
         </Box>
         <Container
-            maxW={{
-                "2xl": "1200px"
-            }}
+          position={"relative"}
+          zIndex={10}
+          maxW={{
+              "2xl": "1200px"
+          }}
         >
             {children}
         </Container>

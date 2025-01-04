@@ -1,12 +1,13 @@
-import { Box, Text, Button, Flex, Link, CardRoot, CardBody, CardDescription, Grid, Icon } from "@chakra-ui/react";
+import { Box, Text, Flex, Link, Grid } from "@chakra-ui/react";
 import Image from "next/image";
 
 // Media
 import Appetiazer from "../../public/appetizers-thumb.png"
-import Steak from "../../public/steak_sandwich-cover.png"
-import { IoIosInformationCircle } from "react-icons/io";
+import offer_1 from "../../public/offer_1.png"
+import offer_2 from "../../public/offer_2.png"
 
 import FoodHeader from "../../components/ui/food-header";
+import FoodCard from "../../components/ui/food-card";
 import FoodButton from "../../components/ui/food-button";
 import ImageSlider from "../../components/ui/image-slider";
 
@@ -41,7 +42,7 @@ export default function Home() {
                 <FoodHeader>
                     Our Menu
                 </FoodHeader>
-                <FoodButton>
+                <FoodButton small={false}>
                     View All
                 </FoodButton>
             </Box>
@@ -84,50 +85,68 @@ export default function Home() {
                 }}
             >
                 <FoodHeader>Featured Items</FoodHeader>
-                <FoodButton>View All</FoodButton>
+                <FoodButton small={false}>View All</FoodButton>
             </Box>
-            <Grid templateColumns={{lg: "repeat(4, 1fr)", md: "repeat(3, 1fr)" , base:"repeat(2, 1fr)"}} gap="6">
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
+            <Grid templateColumns={{lg: "repeat(4, 1fr)", md: "repeat(3, 1fr)" , base:"repeat(2, 1fr)"}} gapX="6" gapY="3">
+                <FoodCard side={false}/>
+                <FoodCard side={false}/>
+                <FoodCard side={false}/>
+                <FoodCard side={false}/>
+                <FoodCard side={false}/>
+                <FoodCard side={false}/>
+                <FoodCard side={false}/>
+                <FoodCard side={false}/>
             </Grid>
         </Box>
-        <Box>
-            <FoodHeader>Most Popular Items</FoodHeader>
+        <Grid
+            mt={{
+                base: 5
+            }}
+            gapX={{
+                base: 2
+            }}
+            gapY={{
+                base: 3
+            }}
+            templateColumns={{sm: "repeat(2, 1fr)", base:"repeat(1, 1fr)"}}
+        >
+            <Image
+                src={offer_1}
+                alt="First Offer"
+                className="rounded-2xl"
+            />
+            <Image
+                src={offer_2}
+                alt="Second Offer"
+                className="rounded-2xl"
+            />
+        </Grid>
+        <Box
+            mt={{
+                base: 5
+            }}
+        >
+            <Box 
+                mb={{
+                    base: 3
+                }}
+            >
+                <FoodHeader>Most Popular Items</FoodHeader>
+            </Box>
+            <Grid templateColumns={{lg: "repeat(3, 1fr)", md: "repeat(2, 1fr)" , base:"repeat(1, 1fr)"}} gapX="6" gapY="3">
+                <FoodCard side={true}/>
+                <FoodCard side={true}/>
+                <FoodCard side={true}/>
+                <FoodCard side={true}/>
+                <FoodCard side={true}/>
+                <FoodCard side={true}/>
+            </Grid>
         </Box>
     </Box>
   );
 }
 
 
-function FoodCard(){
-    return (
-        <CardRoot overflow="hidden" className="border border-[#eff0f6] rounded-3xl">
-            <Image
-                src={Steak}
-                alt="Green double couch with wooden legs"
-                className="w-full"
-            />
-            <CardBody gap="2">
-                <CardDescription
-                    as={Box}
-                >
-                    <Grid
-                        templateColumns={"1fr 1fr"}
-                    >
-                        <Text w={"100%"} fontWeight={700} textWrap={"nowrap"} textOverflow={"ellipsis"}>BBQ Pulled Pored</Text>
-                        <Icon><IoIosInformationCircle /></Icon>
-                    </Grid>
-                </CardDescription>
-            </CardBody>
-        </CardRoot>
-    );
-}
 
 function Item(){
     return (
@@ -141,9 +160,14 @@ function Item(){
             justifyContent={"center"}
             alignItems={"center"}
             w={"7rem"}
+            _hover={{
+                bg: "#FFEDF4"
+            }}
         >
             <Image src={Appetiazer} alt={"image desc"} />
-            <Text fontSize={"0.9rem"}>Appetiazers</Text>
+            <Text fontSize={"0.85rem"} mt={1} fontWeight={"semibold"} textTransform={'lowercase'}>
+                Appetiazers
+            </Text>
         </Flex>
     )
 }
