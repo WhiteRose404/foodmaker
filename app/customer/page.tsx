@@ -6,35 +6,85 @@ import Appetiazer from "../../public/appetizers-thumb.png"
 import Steak from "../../public/steak_sandwich-cover.png"
 import { IoIosInformationCircle } from "react-icons/io";
 
+import FoodHeader from "../../components/ui/food-header";
+import FoodButton from "../../components/ui/food-button";
+import ImageSlider from "../../components/ui/image-slider";
+
 
 
 export default function Home() {
   return (
     <Box>
-        <Box>
-            Slidover
+        <Box
+            my={{
+                base: 2
+            }}
+            maxW={{
+                base: "100%"
+            }}
+            overflowX={"auto"}
+        >
+            <ImageSlider />
         </Box>
-        <Box>
-            <Box>
-                <Text>Our Menu</Text>
-                <Button>View All</Button>
+        <Box
+            mt={{
+                base: 5
+            }}
+        >
+            <Box
+                as={Flex}
+                justifyContent={"space-between"}
+                mb={{
+                    base: 3
+                }}
+            >
+                <FoodHeader>
+                    Our Menu
+                </FoodHeader>
+                <FoodButton>
+                    View All
+                </FoodButton>
             </Box>
             <Flex
                 flexDir={"row"}
                 flexWrap={"nowrap"}
                 w={"100%"}
-                gap={2}
+                overflowX={{
+                    base: "auto"
+                }}
+                gap={3}
+                className="scrollbar-hidden"
             >
+                <Item />
+                <Item />
+                <Item />
+                <Item />
+                <Item />
+                <Item />
+                <Item />
+                <Item />
+                <Item />
+                <Item />
                 <Item />
                 <Item />
                 <Item />
                 <Item />
             </Flex>
         </Box>
-        <Box>
-            <Box>
-                <Text>Featured Items</Text>
-                <Button>View All</Button>
+        <Box
+            mt={{
+                base: 5
+            }}
+        >
+            <Box
+                as={Flex}
+                justifyContent={"space-between"}
+                mb={{
+                    base: 3
+                }}
+            >
+                <FoodHeader>Featured Items</FoodHeader>
+                <FoodButton>View All</FoodButton>
             </Box>
             <Grid templateColumns={{lg: "repeat(4, 1fr)", md: "repeat(3, 1fr)" , base:"repeat(2, 1fr)"}} gap="6">
                 <FoodCard />
@@ -48,7 +98,7 @@ export default function Home() {
             </Grid>
         </Box>
         <Box>
-            Most Popular Items
+            <FoodHeader>Most Popular Items</FoodHeader>
         </Box>
     </Box>
   );

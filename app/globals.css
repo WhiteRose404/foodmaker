@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -24,5 +37,5 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-rubik-mono) ,Arial, Helvetica, sans-serif;
 }

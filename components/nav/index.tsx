@@ -104,7 +104,7 @@ const DesktopNav = ()=>{
           }}
           fontFamily={{ base: "rubik,sans-serif" }}
         >
-          <Icon><FaShoppingBag /></Icon> 
+          <Icon as={Flex} justifyContent={"center"} alignItems={"center"}><FaShoppingBag /></Icon> 
           <Text
             fontWeight={{
               base: "bold"
