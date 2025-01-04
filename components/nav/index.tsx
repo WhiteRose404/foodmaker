@@ -1,12 +1,17 @@
 'use client'
 
 import {
-  PopoverBody,
-  PopoverContent,
-  PopoverRoot,
-  PopoverTitle,
-  PopoverTrigger,
-} from "../ui/popover"
+  DrawerActionTrigger,
+  DrawerBackdrop,
+  DrawerBody,
+  DrawerCloseTrigger,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerRoot,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer"
 
 import {
   Box,
@@ -22,6 +27,7 @@ import {
   useDisclosure,
   Collapsible,
 } from '@chakra-ui/react'
+import { CiMenuBurger } from "react-icons/ci";
 import { FaShoppingBag } from "react-icons/fa";
 import Image from "next/image";
 
@@ -34,15 +40,11 @@ export default function WithSubnavigation() {
       maxW={{
         "2xl": "1200px"
       }}
+      py={{
+        base: 1
+      }}
     >
-      <Box
-        display={{
-          
-        }}
-      >
-        <DesktopNav />
-      </Box>
-      
+      <DesktopNav />
     </Container>
   )
 }
@@ -57,6 +59,10 @@ const DesktopNav = ()=>{
         <Image src={logo} alt="Logo of restaurnte" width={120}/>
         <Flex
           as={"ul"}
+          display={{
+            base: "none",
+            md: "flex"
+          }}
           gap={{
             base: 5
           }}
@@ -76,6 +82,12 @@ const DesktopNav = ()=>{
           <Link>Offer</Link>
         </Flex>
         <Button
+          position={{
+            md: "absolute",
+            lg:"block"
+          }}
+          right={"0"}
+          bottom={"0"}
           rounded={{
             base: "4xl"
           }}
@@ -101,6 +113,39 @@ const DesktopNav = ()=>{
               $0.00
           </Text>
         </Button>
+        <DrawerRoot size={"full"}>
+          <DrawerBackdrop />
+          <DrawerTrigger asChild>
+            <IconButton variant="surface" size="lg" bg={{ base: "gray.100"}}>
+              <CiMenuBurger />
+            </IconButton>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerBody
+              as={Flex}
+              flexDir={"column"}
+              gap={{
+                base: "3rem"
+              }}
+              fontSize={{
+                base: "2.1rem"
+              }}
+              justifyContent={"center"}
+              alignItems={'center'}
+            >
+              <Link
+                color={{
+                  base: "#FF006B"
+                }}
+              >
+                Home
+              </Link>
+              <Link>Menu</Link>
+              <Link>Offer</Link>
+            </DrawerBody>
+            <DrawerCloseTrigger />
+          </DrawerContent>
+        </DrawerRoot>
     </Flex>
   )
 }
