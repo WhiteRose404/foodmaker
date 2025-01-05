@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Icon } from "@chakra-ui/react";
+import { Box, Flex, Icon, Link } from "@chakra-ui/react";
 
 import { MdAddBusiness } from "react-icons/md";
 
@@ -14,7 +14,6 @@ import offer_2 from "@/public/pizza_hut_ori.png"
 
 // component
 import FoodHeader from "@/components/ui/food-header";
-import { Button } from "@/components/ui/button";
 
 
 export default function (){
@@ -60,8 +59,9 @@ export default function (){
 
 function RestoBox({ image,add=false }: { image?: any, add?: boolean}){
     return (
-        <Button
+        <Link
             aspectRatio={16/11}
+            href={"/admin/restaurants"}
             height={{ base: "13vh", md: "20vh"}}
             border={"1px solid black"}
             bg={"gray.50"}
@@ -76,6 +76,6 @@ function RestoBox({ image,add=false }: { image?: any, add?: boolean}){
                     <Image src={image} alt={"brand name"} />
                 )
             }
-        </Button>
+        </Link>
     )
 }

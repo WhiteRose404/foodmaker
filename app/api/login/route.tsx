@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-
 import { SignJWT } from "jose"
 
 import hash from '@/utils/hash';
@@ -9,14 +7,9 @@ const database = {
     passwd: process.env.PASSWORD_HASH
 }
 
-type ResponseData = {
-    message: string
-}
-  
 export async function POST(
     req: Request,
 ) {
-
     try {
         const body = await req.json()
         // const rawBody = await req.body;
@@ -43,11 +36,7 @@ export async function POST(
         const token = await new SignJWT({ 
                 email,
         }).setProtectedHeader({ alg }).setIssuedAt().setExpirationTime('3h') // Token expires in 2 hours
-        .setIssuer('Food_maker_yoedd').setAudience('Food_maker_yoedd-audience').sign(secret)
-            // Set HTTP-only cookie with the token
-        // res.setHeader('Set-Cookie', [
-        //     `authToken=${token}; HttpOnly; Path=/; Max-Age=${10800}; SameSite=Strict; Secure`
-        // ])
+        .setIssuer('Food_maker_yoedd').setAudience('What-are-you-doing-hacker-man').sign(secret)
         return new Response(JSON.stringify({message: 'Sign in successful'}) ,{ status: 200, headers: {"set-cookie": `authToken=${token}; HttpOnly; Path=/; Max-Age=${10800}; SameSite=Strict; Secure`}})
     } catch (error) {
       console.error('Sign-in error:', error)
