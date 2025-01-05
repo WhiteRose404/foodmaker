@@ -5,6 +5,14 @@ import { Container, Box } from "@chakra-ui/react";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 
+type LinkType = {value: string, link: string};
+
+const links:LinkType[] = [
+  { value: "Home", link: "/home"},
+  { value: "Menu", link: "/home/menu"},
+  { value: "Offers", link: "/home/offers"},
+]
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +35,7 @@ export default function RootLayout({
           top={"0px"}
           zIndex={100}
         >
-            <Nav />
+            <Nav links={links}/>
       </Box>
       <Container
           position={"relative"}

@@ -14,9 +14,13 @@ import {
 
 import { CiMenuBurger } from "react-icons/ci";
 import { FaShoppingBag } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
+
 
 import { useState } from 'react';
 import Image from "next/image";
+import { usePathname } from 'next/navigation'
+
 
 // Media
 import logo from "@/public/theme-logo.png";
@@ -34,11 +38,12 @@ import {
   DrawerRoot,
   DrawerTitle,
   DrawerTrigger
-} from "../ui/drawer"
-import FoodHeader from '../ui/food-header';
+} from "@/components/ui/drawer"
+import FoodHeader from '@/components/ui/food-header';
 
+type LinkType = {value: string, link: string};
 
-export default function WithSubnavigation() {
+export default function WithSubnavigation({ admin=false, links }: {admin?: boolean, links: LinkType[]}) {
   return (
     <Container
       maxW={{
@@ -48,12 +53,12 @@ export default function WithSubnavigation() {
         base: 1
       }}
     >
-      <DesktopNav />
+      <DesktopNav admin={admin} links={links}/>
     </Container>
   )
 }
 
-const DesktopNav = ()=>{
+const DesktopNav = ({ admin, links }: {admin: boolean, links: LinkType[]} )=>{
   const [cartDrawer, setCartDrawer] = useState(false);
   return (
     <Flex
@@ -76,13 +81,15 @@ const DesktopNav = ()=>{
             base: "0.95rem"
           }}
         >
-          <Links />
+          <Links links={links} />
         </Flex>
         <DrawerRoot open={cartDrawer}>
           <DrawerBackdrop/>
           <DrawerTrigger asChild>
             <Button
-              onClick={() => setCartDrawer(true)}
+              onClick={() => {
+                setCartDrawer(true && !admin)
+              }}
               rounded={{
                 base: "4xl"
               }}
@@ -103,13 +110,13 @@ const DesktopNav = ()=>{
                 md: "0"
               }}
             >
-              <Icon as={Flex} justifyContent={"center"} alignItems={"center"}><FaShoppingBag /></Icon> 
+              <Icon as={Flex} justifyContent={"center"} alignItems={"center"}>{admin ? <RiAdminFill /> : <FaShoppingBag />}</Icon> 
               <Text
                 fontWeight={{
                   base: "bold"
                 }}
               >
-                  $0.00
+                  {admin ? "Admin":"$0.00"}
               </Text>
             </Button>
           </DrawerTrigger>
@@ -157,7 +164,7 @@ const DesktopNav = ()=>{
               justifyContent={"center"}
               alignItems={'center'}
             >
-              <Links />
+              <Links links={links}/>
             </DrawerBody>
             <DrawerCloseTrigger />
           </DrawerContent>
@@ -166,10 +173,20 @@ const DesktopNav = ()=>{
   )
 }
 
-function Links(){
+function Links({ links }: { links: LinkType[] }){
+  const pathname = usePathname()
   return (
     <>
-      <Link
+      {links.map((link: LinkType)=>(
+        <Link 
+          color={{
+            base: pathname.endsWith(link.link) ? "#FF006B" : "inherit"       
+          }}
+          key={link.value}
+          href={link.link}
+        >{link.value}</Link>
+      ))}
+      {/* <Link
         color={{
           base: "#FF006B"
         }}
@@ -182,7 +199,7 @@ function Links(){
       >Menu</Link>
       <Link
         href="/home/offers"
-      >Offer</Link>
+      >Offer</Link> */}
     </>
   )
 }
