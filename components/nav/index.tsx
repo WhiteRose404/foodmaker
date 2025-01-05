@@ -76,20 +76,7 @@ const DesktopNav = ()=>{
             base: "0.95rem"
           }}
         >
-          <Link
-            color={{
-              base: "#FF006B"
-            }}
-            href="/home"
-          >
-            Home
-          </Link>
-          <Link
-            href="/home/menu"
-          >Menu</Link>
-          <Link
-            href="/home/offers"
-          >Offer</Link>
+          <Links />
         </Flex>
         <DrawerRoot open={cartDrawer}>
           <DrawerBackdrop/>
@@ -170,20 +157,33 @@ const DesktopNav = ()=>{
               justifyContent={"center"}
               alignItems={'center'}
             >
-              <Link
-                color={{
-                  base: "#FF006B"
-                }}
-              >
-                Home
-              </Link>
-              <Link>Menu</Link>
-              <Link>Offer</Link>
+              <Links />
             </DrawerBody>
             <DrawerCloseTrigger />
           </DrawerContent>
         </DrawerRoot>
     </Flex>
+  )
+}
+
+function Links(){
+  return (
+    <>
+      <Link
+        color={{
+          base: "#FF006B"
+        }}
+        href="/home"
+      >
+        Home
+      </Link>
+      <Link
+        href="/home/menu"
+      >Menu</Link>
+      <Link
+        href="/home/offers"
+      >Offer</Link>
+    </>
   )
 }
 
