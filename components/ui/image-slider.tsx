@@ -80,7 +80,10 @@ export default function ImageSlider() {
         <Image
           src={images[currentIndex].src}
           alt={`Slider Image ${currentIndex + 1}`}
-          layout="fill"
+          // layout="fill"
+          style={{
+            objectFit: "fill"
+          }}
           className="rounded-xl transition-all duration-500 ease-in-out cursor-pointer"
         />
       </div>

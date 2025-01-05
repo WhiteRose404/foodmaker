@@ -12,7 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-        <Box
+      <Box
           py={{
             base: 3
           }}
@@ -28,17 +28,24 @@ export default function RootLayout({
           zIndex={100}
         >
             <Nav />
-        </Box>
-        <Container
+      </Box>
+      <Container
           position={"relative"}
           zIndex={10}
           maxW={{
               "2xl": "1200px"
           }}
+          css={{
+            "& *": {
+              transitionProperty: "all",
+              transitionDuration: "0.3s",
+              transitionTimingFunction: "linear"
+            }
+          }}
         >
             {children}
-        </Container>
-        <Footer />
+      </Container>
+      <Footer />
     </>
   );
 }

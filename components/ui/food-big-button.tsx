@@ -2,9 +2,10 @@
 
 import { Button, Link } from "@chakra-ui/react";
 
-export default function({ children }: { text?: string, children?: any}){
+export default function({ children,onClick }: { onClick?: any, text?: string, children?: any}){
     return (
         <Button
+            onClick={onClick}
             as={Link}
             fontWeight={"semibold"}
             color={"#FF006B"}
@@ -24,6 +25,7 @@ export default function({ children }: { text?: string, children?: any}){
             mt={{
                 base: "auto"
             }}
+            transitionDuration="0.1s"
         >
             {children}
         </Button>

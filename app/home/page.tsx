@@ -1,12 +1,16 @@
-import { Box, Text, Flex, Link, Grid } from "@chakra-ui/react";
+import { Box, Flex, Grid } from "@chakra-ui/react";
+
+// nextjs
 import Image from "next/image";
 
 // Media
-import Appetiazer from "../../public/appetizers-thumb.png"
 import offer_1 from "../../public/offer_1.png"
 import offer_2 from "../../public/offer_2.png"
 
+
+// component
 import FoodHeader from "../../components/ui/food-header";
+import FoodMenu from "../../components/ui/food-menu";
 import FoodCard from "../../components/ui/food-card";
 import FoodButton from "../../components/ui/food-button";
 import ImageSlider from "../../components/ui/image-slider";
@@ -56,20 +60,20 @@ export default function Home() {
                 gap={3}
                 className="scrollbar-hidden"
             >
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
+                <FoodMenu />
             </Flex>
         </Box>
         <Box
@@ -144,30 +148,4 @@ export default function Home() {
         </Box>
     </Box>
   );
-}
-
-
-
-function Item(){
-    return (
-        <Flex
-            as={Link}
-            flexDir={"column"}
-            bgColor={"#ececf1"}
-            px={5}
-            py={3}
-            borderRadius={"2xl"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            w={"7rem"}
-            _hover={{
-                bg: "#FFEDF4"
-            }}
-        >
-            <Image src={Appetiazer} alt={"image desc"} />
-            <Text fontSize={"0.85rem"} mt={1} fontWeight={"semibold"} textTransform={'lowercase'}>
-                Appetiazers
-            </Text>
-        </Flex>
-    )
 }

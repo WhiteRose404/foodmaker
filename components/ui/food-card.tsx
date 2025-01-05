@@ -1,19 +1,35 @@
 "use client";
 
-import { Text, Flex, CardRoot, CardBody, CardDescription, Grid, Icon } from "@chakra-ui/react";
+import { Text, Box, Flex, CardRoot, CardBody, CardDescription, Grid, Icon, IconButton, Button } from "@chakra-ui/react";
+
+import { useState } from "react";
 import Image from "next/image";
 
 // Media
 import Steak from "../../public/steak_sandwich-cover.png"
 import { IoIosInformationCircle } from "react-icons/io";
 
-import FoodButton from "../../components/ui/food-button";
 
+// components
+import FoodButton from "../../components/ui/food-button";
+import {
+    DialogActionTrigger,
+    DialogBody,
+    DialogCloseTrigger,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogRoot,
+    DialogTitle,
+    DialogTrigger,
+  } from "../../components/ui/dialog"
+import FoodHeader from "./food-header";
 export default function ({ side=true } : { side: boolean }){
+    const [open, setOpen] = useState(false)
     return (
         <CardRoot overflow="hidden" flexDirection={side ? "row" : "column"} className="border border-[#eff0f6] rounded-2xl w-fit"
             _hover={{
-                boxShadow: "0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)"
+                boxShadow: "0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)",
             }}
         >
             <Image
@@ -42,7 +58,37 @@ export default function ({ side=true } : { side: boolean }){
                         alignItems={"center"}
                     >
                         <Text w={"100%"} fontWeight={700} textWrap={"nowrap"} textOverflow={"ellipsis"}>BBQ Pulled Pored</Text>
-                        <Icon w={"100%"} ml={"auto"}><IoIosInformationCircle /></Icon>
+                        <DialogRoot size={{ base: "sm"}} placement={"center"}>
+                            <DialogTrigger asChild>
+                            <Icon
+                                ml={"auto"}
+                                cursor={"pointer"}
+                                _hover={{
+                                    color: "#FF006B"
+                                }}
+                            >
+                                <IoIosInformationCircle />
+                            </Icon>
+                            </DialogTrigger>
+                            <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>
+                                    <FoodHeader>BBQ Pulled Pored</FoodHeader>
+                                </DialogTitle>
+                            </DialogHeader>
+                            <DialogBody>
+                                <Box
+                                    as={Flex}
+                                    flexDir={"column"}
+                                    gap={2}
+                                >
+                                    <Text fontSize={"md"} fontWeight={"semibold"}>Main ingredients</Text>
+                                    <Text ml={1}>LMIV - Allergen</Text>
+                                </Box>
+                            </DialogBody>
+                            <DialogCloseTrigger />
+                            </DialogContent>
+                        </DialogRoot>
                     </Grid>
                     <Text
                         fontWeight={"light"}
@@ -62,9 +108,27 @@ export default function ({ side=true } : { side: boolean }){
                         >
                             $2.50
                         </Text>
-                        <FoodButton>
-                            Add
-                        </FoodButton>
+                        <DialogRoot size={"lg"} placement={"center"} open={open} onOpenChange={(e) => setOpen(e.open)}>
+                            <DialogTrigger asChild>
+                                <FoodButton onClick={() => setOpen(true)}>
+                                    Add
+                                </FoodButton>
+                            </DialogTrigger>
+                            <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>
+                                    <FoodHeader>BBQ Pulled Pored</FoodHeader>
+                                </DialogTitle>
+                            </DialogHeader>
+                            <DialogBody>
+                                <Box>
+                                    <Text fontWeight={"bold"}>Main ingredients</Text>
+                                    <Text>LMIV - Allergen</Text>
+                                </Box>
+                            </DialogBody>
+                            <DialogCloseTrigger />
+                            </DialogContent>
+                        </DialogRoot>
                     </Flex>
                 </CardDescription>
             </CardBody>

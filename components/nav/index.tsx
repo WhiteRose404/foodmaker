@@ -1,31 +1,22 @@
 'use client'
 
 import {
-  DrawerActionTrigger,
   DrawerBackdrop,
   DrawerBody,
   DrawerCloseTrigger,
   DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
   DrawerRoot,
-  DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer"
 
 import {
-  Box,
   Link,
   Container,
   Flex,
   Text,
   IconButton,
   Button,
-  Stack,
   Icon,
-  useBreakpointValue,
-  useDisclosure,
-  Collapsible,
 } from '@chakra-ui/react'
 import { CiMenuBurger } from "react-icons/ci";
 import { FaShoppingBag } from "react-icons/fa";
@@ -82,12 +73,6 @@ const DesktopNav = ()=>{
           <Link>Offer</Link>
         </Flex>
         <Button
-          // position={{
-          //   base: "absolute",
-          //   lg:"block"
-          // }}
-          // right={0}
-          // bottom={0}
           rounded={{
             base: "4xl"
           }}
@@ -103,6 +88,10 @@ const DesktopNav = ()=>{
             base: "0.95rem"
           }}
           fontFamily={{ base: "rubik,sans-serif" }}
+          ml={{
+            base: "auto",
+            md: "0"
+          }}
         >
           <Icon as={Flex} justifyContent={"center"} alignItems={"center"}><FaShoppingBag /></Icon> 
           <Text
@@ -116,7 +105,7 @@ const DesktopNav = ()=>{
         <DrawerRoot size={"full"}>
           <DrawerBackdrop />
           <DrawerTrigger asChild>
-            <IconButton variant="surface" size="lg" bg={{ base: "gray.100"}} display={{ base: "block", md: "none"}}>
+            <IconButton ml={4} variant="surface" size="lg" border={{ base: "1px solid gray.100"}} h={"2rem"} aspectRatio={"golden"} display={{ base: "flex", md: "none"}} justifyContent={"center"}>
               <CiMenuBurger />
             </IconButton>
           </DrawerTrigger>

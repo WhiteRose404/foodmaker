@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${getRubik.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
+        className={`${getRubik.variable} ${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         <Provider>
           {children}
         </Provider>

@@ -46,6 +46,7 @@ const SocialButton = ({
 export default function SmallWithSocial() {
   return (
     <Box
+      mt={"auto"}
       bg={'gray.50'}
       color={'gray.700'}>
       <Container

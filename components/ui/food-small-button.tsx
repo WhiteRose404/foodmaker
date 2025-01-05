@@ -4,9 +4,10 @@ import { Button, Link, Icon } from "@chakra-ui/react";
 import { FaShoppingBag } from "react-icons/fa";
 
 
-export default function({ children }: { text?: string, children?: any}){
+export default function({ children, onClick }: { onClick?: any, text?: string, children?: any}){
     return (
         <Button
+            onClick={onClick}
             as={Link}
             fontWeight={"semibold"}
             color={"#FF006B"}
@@ -31,6 +32,7 @@ export default function({ children }: { text?: string, children?: any}){
                 bg: "#FF006B",
                 color: "white"
             }}
+            transitionDuration="0.1s"
         >
             <Icon>
                 <FaShoppingBag />
