@@ -6,11 +6,11 @@ import { Box, Grid } from "@chakra-ui/react";
 import Image from "next/image";
 
 // Media
-import offer_1 from "../../../public/offer_1.png"
-import offer_2 from "../../../public/offer_2.png"
+import offer_1 from "@/public/offer_1.png"
+import offer_2 from "@/public/offer_2.png"
 
 // component
-import FoodHeader from "../../../components/ui/food-header";
+import FoodHeader from "@/components/ui/food-header";
 
 
 

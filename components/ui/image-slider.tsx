@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
-import image1 from "../../public/slidenum1.png";
-import image2 from "../../public/slidenum2.png";
-import image3 from "../../public/slidenum3.png";
+import image1 from "@/public/slidenum1.png";
+import image2 from "@/public/slidenum2.png";
+import image3 from "@/public/slidenum3.png";
 
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 

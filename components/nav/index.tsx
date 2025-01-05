@@ -19,8 +19,8 @@ import { useState } from 'react';
 import Image from "next/image";
 
 // Media
-import logo from "../../public/theme-logo.png";
-import emptyCart from "../../public/empty-cart.gif";
+import logo from "@/public/theme-logo.png";
+import emptyCart from "@/public/empty-cart.gif";
 
 // Componenet
 import {

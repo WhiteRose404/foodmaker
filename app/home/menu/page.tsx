@@ -5,9 +5,9 @@ import { Box, Grid, Flex } from "@chakra-ui/react";
 
 
 // component
-import FoodMenu from "../../../components/ui/food-menu";
-import FoodHeader from "../../../components/ui/food-header";
-import FoodCard from "../../../components/ui/food-card";
+import FoodMenu from "@/components/ui/food-menu";
+import FoodHeader from "@/components/ui/food-header";
+import FoodCard from "@/components/ui/food-card";
 
 export default function (){
     return (

@@ -6,11 +6,11 @@ import { useState } from "react";
 import Image from "next/image";
 
 // Media
-import Steak from "../../public/steak_sandwich-cover.png"
+import Steak from "@/public/steak_sandwich-cover.png"
 import { IoIosInformationCircle } from "react-icons/io";
 
 // components
-import FoodButton from "../../components/ui/food-button";
+import FoodButton from "@/components/ui/food-button";
 import {
     DialogActionTrigger,
     DialogBody,

@@ -4,7 +4,7 @@ import { Flex, Link, Text} from "@chakra-ui/react"
 import Image from "next/image";
 
 // media
-import Appetiazer from "../../public/appetizers-thumb.png";
+import Appetiazer from "@/public/appetizers-thumb.png";
 
 
 export default function ({ topMenu=false, active=false } : { topMenu?: boolean, active?: boolean }){
