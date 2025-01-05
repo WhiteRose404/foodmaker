@@ -1,6 +1,6 @@
 "use client";
 
-import { Text, Box, Flex, CardRoot, CardBody, CardDescription, Grid, Icon, IconButton, Button } from "@chakra-ui/react";
+import { Text, Box, Flex, CardRoot, CardBody, CardDescription, Grid, Icon, Textarea, Button } from "@chakra-ui/react";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -8,7 +8,6 @@ import Image from "next/image";
 // Media
 import Steak from "../../public/steak_sandwich-cover.png"
 import { IoIosInformationCircle } from "react-icons/io";
-
 
 // components
 import FoodButton from "../../components/ui/food-button";
@@ -52,44 +51,7 @@ export default function ({ side=true } : { side: boolean }){
                         base: 2
                     }}
                 >
-                    <Grid
-                        templateColumns={"10fr 1fr"}
-                        justifyContent={"space-between"}
-                        alignItems={"center"}
-                    >
-                        <Text w={"100%"} fontWeight={700} textWrap={"nowrap"} textOverflow={"ellipsis"}>BBQ Pulled Pored</Text>
-                        <DialogRoot size={{ base: "sm"}} placement={"center"}>
-                            <DialogTrigger asChild>
-                            <Icon
-                                ml={"auto"}
-                                cursor={"pointer"}
-                                _hover={{
-                                    color: "#FF006B"
-                                }}
-                            >
-                                <IoIosInformationCircle />
-                            </Icon>
-                            </DialogTrigger>
-                            <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>
-                                    <FoodHeader>BBQ Pulled Pored</FoodHeader>
-                                </DialogTitle>
-                            </DialogHeader>
-                            <DialogBody>
-                                <Box
-                                    as={Flex}
-                                    flexDir={"column"}
-                                    gap={2}
-                                >
-                                    <Text fontSize={"md"} fontWeight={"semibold"}>Main ingredients</Text>
-                                    <Text ml={1}>LMIV - Allergen</Text>
-                                </Box>
-                            </DialogBody>
-                            <DialogCloseTrigger />
-                            </DialogContent>
-                        </DialogRoot>
-                    </Grid>
+                    <CardHeader />
                     <Text
                         fontWeight={"light"}
                         fontSize={"0.75rem"}
@@ -116,16 +78,77 @@ export default function ({ side=true } : { side: boolean }){
                             </DialogTrigger>
                             <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>
-                                    <FoodHeader>BBQ Pulled Pored</FoodHeader>
+                                <DialogTitle
+                                    as={Grid}
+                                    gridTemplateColumns={{
+                                        base: "120px 1fr"
+                                    }}
+                                    gap={2}
+                                >
+                                    <Image
+                                        src={Steak}
+                                        alt="Green double couch with wooden legs"
+                                        style={{
+                                            objectFit: "cover"
+                                        }}
+                                        className={`h-auto rounded-lg w-full`}
+                                    />
+                                    <Box>
+                                        <CardHeader />
+                                        <Text
+                                            fontWeight={"light"}
+                                            fontSize={"0.75rem"}
+                                        >
+                                            With a side of fried rice or supreme soy noodles, and steamed chi..
+                                        </Text>
+                                        <Text
+                                            fontSize={{
+                                                base: "1rem"
+                                            }}
+                                            fontWeight="semibold"
+                                        >
+                                            $2.50
+                                        </Text>
+                                    </Box>
                                 </DialogTitle>
                             </DialogHeader>
                             <DialogBody>
                                 <Box>
-                                    <Text fontWeight={"bold"}>Main ingredients</Text>
-                                    <Text>LMIV - Allergen</Text>
+                                    <Text fontWeight={"semibold"}>Quantity</Text>
+                                    <Box
+                                        as={Flex}
+                                        flexDir={"column"}
+                                        gap={1}
+                                    >
+                                        <Text fontSize={"0.95rem"} fontWeight={"semibold"}>Special Instructions</Text>
+                                        <Textarea placeholder="Add Notes..." p={1} autoresize />
+                                    </Box>
                                 </Box>
                             </DialogBody>
+                            <DialogFooter>
+                                <Button
+                                    onClick={() => setOpen(false)}
+                                    fontWeight={"bold"}
+                                    px={{
+                                        base: 3
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={() =>{
+                                        setOpen(false)
+                                    }}
+                                    bg={"#FF006B"}
+                                    color={"white"}
+                                    fontWeight={"bold"}
+                                    px={{
+                                        base: 3
+                                    }}
+                                >
+                                    Add to Cart - {"$2.00"}
+                                </Button>
+                            </DialogFooter>
                             <DialogCloseTrigger />
                             </DialogContent>
                         </DialogRoot>
@@ -134,4 +157,46 @@ export default function ({ side=true } : { side: boolean }){
             </CardBody>
         </CardRoot>
     );
+}
+
+function CardHeader(){
+    return (
+        <Flex
+            justifyContent={"start"}
+            flexDir={"row"}
+            alignItems={"center"}
+        >
+            <Text mr={{base: 2}}fontWeight={700} textWrap={"nowrap"} textOverflow={"ellipsis"}>BBQ Pulled Pored</Text>
+            <DialogRoot size={{ base: "sm"}} placement={"center"}>
+                <DialogTrigger asChild>
+                <Icon
+                    cursor={"pointer"}
+                    _hover={{
+                        color: "#FF006B"
+                    }}
+                >
+                    <IoIosInformationCircle />
+                </Icon>
+                </DialogTrigger>
+                <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>
+                        <FoodHeader>BBQ Pulled Pored</FoodHeader>
+                    </DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                    <Box
+                        as={Flex}
+                        flexDir={"column"}
+                        gap={2}
+                    >
+                        <Text fontSize={"md"} fontWeight={"semibold"}>Main ingredients</Text>
+                        <Text ml={1}>LMIV - Allergen</Text>
+                    </Box>
+                </DialogBody>
+                <DialogCloseTrigger />
+                </DialogContent>
+            </DialogRoot>
+        </Flex>
+    )
 }

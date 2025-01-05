@@ -1,13 +1,5 @@
 'use client'
 
-import {
-  DrawerBackdrop,
-  DrawerBody,
-  DrawerCloseTrigger,
-  DrawerContent,
-  DrawerRoot,
-  DrawerTrigger,
-} from "../ui/drawer"
 
 import {
   Link,
@@ -18,12 +10,33 @@ import {
   Button,
   Icon,
 } from '@chakra-ui/react'
+
+
 import { CiMenuBurger } from "react-icons/ci";
 import { FaShoppingBag } from "react-icons/fa";
+
+import { useState } from 'react';
 import Image from "next/image";
 
 // Media
 import logo from "../../public/theme-logo.png";
+import emptyCart from "../../public/empty-cart.gif";
+
+// Componenet
+import {
+  DrawerActionTrigger,
+  DrawerBackdrop,
+  DrawerBody,
+  DrawerCloseTrigger,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerRoot,
+  DrawerTitle,
+  DrawerTrigger
+} from "../ui/drawer"
+import FoodHeader from '../ui/food-header';
+
 
 export default function WithSubnavigation() {
   return (
@@ -41,6 +54,7 @@ export default function WithSubnavigation() {
 }
 
 const DesktopNav = ()=>{
+  const [cartDrawer, setCartDrawer] = useState(false);
   return (
     <Flex
         flexDir={"row"}
@@ -66,42 +80,76 @@ const DesktopNav = ()=>{
             color={{
               base: "#FF006B"
             }}
+            href="/home"
           >
             Home
           </Link>
-          <Link>Menu</Link>
-          <Link>Offer</Link>
+          <Link
+            href="/home/menu"
+          >Menu</Link>
+          <Link
+            href="/home/offers"
+          >Offer</Link>
         </Flex>
-        <Button
-          rounded={{
-            base: "4xl"
-          }}
-          bg={"#17171e"}
-          color={"white"}
-          px={{
-            base: 4
-          }}
-          gap={{
-            base: 2
-          }}
-          fontSize={{
-            base: "0.95rem"
-          }}
-          fontFamily={{ base: "rubik,sans-serif" }}
-          ml={{
-            base: "auto",
-            md: "0"
-          }}
-        >
-          <Icon as={Flex} justifyContent={"center"} alignItems={"center"}><FaShoppingBag /></Icon> 
-          <Text
-            fontWeight={{
-              base: "bold"
-            }}
-          >
-              $0.00
-          </Text>
-        </Button>
+        <DrawerRoot open={cartDrawer}>
+          <DrawerBackdrop/>
+          <DrawerTrigger asChild>
+            <Button
+              onClick={() => setCartDrawer(true)}
+              rounded={{
+                base: "4xl"
+              }}
+              bg={"#17171e"}
+              color={"white"}
+              px={{
+                base: 4
+              }}
+              gap={{
+                base: 2
+              }}
+              fontSize={{
+                base: "0.95rem"
+              }}
+              fontFamily={{ base: "rubik,sans-serif" }}
+              ml={{
+                base: "auto",
+                md: "0"
+              }}
+            >
+              <Icon as={Flex} justifyContent={"center"} alignItems={"center"}><FaShoppingBag /></Icon> 
+              <Text
+                fontWeight={{
+                  base: "bold"
+                }}
+              >
+                  $0.00
+              </Text>
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle justifyContent={"center"}>
+                <FoodHeader center>My Cart</FoodHeader>
+              </DrawerTitle>
+            </DrawerHeader>
+            <DrawerBody
+              as={Flex}
+              justifyContent={"center"}
+              alignItems={"center"}
+              flexDir={"column"}
+            >
+              <Image src={emptyCart} alt='empty Cart' />
+              <Text mt={{base: 5}} fontWeight={"extralight"}>Empty Cart</Text>
+            </DrawerBody>
+            <DrawerFooter>
+              {/* <DrawerActionTrigger asChild>
+                <Button variant="outline">Cancel</Button>
+              </DrawerActionTrigger>
+              <Button>Save</Button> */}
+            </DrawerFooter>
+            <DrawerCloseTrigger onClick={() => setCartDrawer(false)}/>
+          </DrawerContent>
+        </DrawerRoot>
         <DrawerRoot size={"full"}>
           <DrawerBackdrop />
           <DrawerTrigger asChild>

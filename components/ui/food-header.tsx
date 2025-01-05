@@ -2,7 +2,7 @@
 
 import { Text } from "@chakra-ui/react";
 
-export default function({ customColor, children }: { customColor?: string, children?: any}){
+export default function({ customColor, children, center}: { center?: boolean, customColor?: string, children?: any}){
     return (
         <Text
             fontWeight={"bold"}
@@ -10,6 +10,7 @@ export default function({ customColor, children }: { customColor?: string, child
                 base: "1.5rem"
             }}
             color={`${customColor || "inherit"}`}
+            textAlign={`${center || "inherit"}`}
         >
             {children}
         </Text>
