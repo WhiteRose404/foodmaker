@@ -11,11 +11,10 @@ const database = {
 
 type ResponseData = {
     message: string
-  }
+}
   
 export async function POST(
-    req: any,
-    res: NextApiResponse<ResponseData>
+    req: Request,
 ) {
 
     try {
