@@ -16,11 +16,7 @@ const RestaurantSchema = new Schema({
       }],
       active: { type: Boolean, default: true }
     }],
-    tables: [{
-      tableNumber: { type: String, required: true },
-      qrCode: String,
-      isOccupied: { type: Boolean, default: false }
-    }],
+    tables: { type: Number, required: true },
     active: { type: Boolean, default: true }
 }, { timestamps: true })
   

@@ -7,13 +7,13 @@ export async function GET() {
       await dbConnect();
       // Example model usage
       console.log("fetching restaurents");
-      const items = await Restaurant.find({})
-      return NextResponse.json(items)
+      const restaurants = await Restaurant.find({}, 'name brandColor logo active')
+      console.log("REQUESTED: items",restaurants)
+      return NextResponse.json(restaurants)
     } catch (error) {
-      return NextResponse.json(
-        { error: 'Failed to fetch restaurents' },
-        { status: 500 }
-      )
+      return NextResponse.json(JSON.stringify(
+            { error: 'Failed to fetch restaurents' },
+        ),{ status: 500 })
     }
   }
   
