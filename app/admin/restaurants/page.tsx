@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Tabs, Kbd, Table } from "@chakra-ui/react"
+import { Box, Flex, Tabs, Kbd, Table, Grid, Text } from "@chakra-ui/react"
 import {
   ActionBarContent,
   ActionBarRoot,
@@ -13,6 +13,16 @@ import { useState } from "react"
 
 
 const items = [
+  {
+    title: "Basic Information's",
+    content: [
+        { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
+        { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
+        { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
+        { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
+        { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
+      ]
+  },
   {
     title: "Menus",
     content: [
@@ -39,10 +49,10 @@ export default function(){
   return (
     <Flex mt={{ base: 3}}>
       <Tabs.Root defaultValue="1" width="full">
-        <Tabs.List>
+        <Tabs.List as={Grid} gridTemplateColumns={"repeat(3, 1fr)"}>
           {items.map((item, index) => (
-            <Tabs.Trigger key={index} value={item.title} minW={{ base: "10rem"}}>
-                {item.title}
+            <Tabs.Trigger key={index} value={item.title}>
+                <Text  textAlign={"center"}>{item.title}</Text>
             </Tabs.Trigger>
           ))}
         </Tabs.List>

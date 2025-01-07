@@ -3,7 +3,7 @@ import { SignJWT } from "jose"
 import hash from '@/utils/hash';
 
 const database = {
-    email: "eddoughri.youssef@gmail.com",
+    email: "digitabadmin@digitab.ma",
     passwd: process.env.PASSWORD_HASH
 }
 

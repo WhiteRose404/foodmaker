@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"],
     "target": "ESNext",
     "lib": [
       "dom",
@@ -28,6 +29,7 @@
       "@/components/*": ["./components/*"],
       "@/public/*": ["./public/*"],
       "@/utils/*": ["./utils/*"],
+      "@/models/*": ["./models/*"],
     },
     "resolveJsonModule": true
   },
