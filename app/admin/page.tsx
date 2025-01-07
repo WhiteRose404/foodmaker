@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, Grid, Flex, Icon, Stack, Fieldset, Input } from "@chakra-ui/react";
-import { HStack, parseColor } from "@chakra-ui/react"
+import { Box, Grid, Flex, Icon, Fieldset, Input, FileUploadFileAcceptDetails } from "@chakra-ui/react";
+import { HStack, parseColor } from "@chakra-ui/react";
 
 // nextjs
 import Image from "next/image";
@@ -45,6 +45,7 @@ import {
     FileUploadList,
     FileUploadRoot,
     FileUploadTrigger,
+    FileUploadRootProps
 } from "@/components/ui/file-upload"
 
 // utils
@@ -72,12 +73,12 @@ export default function (){
             console.log("data we have is", data);
             return data;
         }
-        fetchData().then((resolve: any)=>{console.log("got data", resolve.value)})
-    })
+        fetchData().then((resolve: any)=>{console.log("got data", resolve.value)}).catch((reason: any)=>{ console.log("") })
+    }, [])
+
 
     const [open, setOpen] = useState<boolean>(false);
     const route = useRouter();
-
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
@@ -196,7 +197,7 @@ export default function (){
                                         alignItems={"center"}
                                     >
                                         <ColorPicker />
-                                        <FileUploader />
+                                        <FileUploader fileName={`${name}_logo`} />
                                     </Grid>
                                     <Field gap={0} label="Number of Tables" w={"full"}>
                                         <NumberInputRoot
@@ -281,16 +282,52 @@ function ColorPicker(){
     </ColorPickerRoot>
   )
 }
+// type FileDetails = FileUploadFileAcceptDetails & { file: File }
 
-function FileUploader(){
+function FileUploader({ fileName } : {fileName: string}) {
+    const [isUploading, setIsUploading] = useState(false)
+    
+    async function handleUpload(details: FileUploadFileAcceptDetails) {
+        setIsUploading(true)
+        const formData = new FormData();
+ 
+        try {
+            formData.append(fileName, details.files[0])
+            const res = await fetch(`/api/add/image?file=${fileName}`, {
+                method: 'POST',
+                body: formData
+            })
+            const { url } = await res.json()
+            // Handle successful upload - pass URL to parent etc.
+        } catch (error) {
+            console.error('Upload failed:', error)
+            // Handle error - show toast etc.
+        } finally {
+            setIsUploading(false)
+        }
+    }
+ 
     return (
-        <FileUploadRoot>
+        <FileUploadRoot 
+            allowDrop
+            directory={false}
+            onFileAccept={handleUpload}
+        >
             <FileUploadTrigger asChild>
                 <Flex
                     h="full" w="full"
-                    justifyContent={"center"} p={{base: 2}} alignItems={"center"}
+                    justifyContent="center" 
+                    p={{base: 2}} 
+                    alignItems="center"
                 >
-                    <Button variant="outline" border={"1px solid #000000A0"} justifyContent={"center"} p={10} alignItems={"center"}>
+                    <Button 
+                        variant="outline"
+                        border="1px solid #000000A0"
+                        justifyContent="center"
+                        p={10}
+                        alignItems="center"
+                        loading={isUploading}
+                    >
                         <HiUpload /> Upload Logo
                     </Button>
                 </Flex>
@@ -298,4 +335,4 @@ function FileUploader(){
             <FileUploadList />
         </FileUploadRoot>
     )
-  }
+ }

@@ -35,7 +35,6 @@ export async function POST(request: Request) {
           { status: 400 }
         )
       }
-   
       await dbConnect()
    
       // Find restaurant and category

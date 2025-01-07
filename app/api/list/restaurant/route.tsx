@@ -12,8 +12,9 @@ export async function GET() {
       return NextResponse.json(restaurants)
     } catch (error) {
       return NextResponse.json(JSON.stringify(
-            { error: 'Failed to fetch restaurents' },
-        ),{ status: 500 })
+          { error: 'Failed to fetch restaurents' },
+        ), { status: 500 }
+      );
     }
   }
   
