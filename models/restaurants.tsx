@@ -9,6 +9,7 @@ const RestaurantSchema = new Schema({
     categories: [{
       name: { type: String, required: true },
       description: String,
+      logo: String,
       order: { type: Number, default: 0 },
       items: [{
         itemId: { type: Schema.Types.ObjectId, ref: 'Item' },

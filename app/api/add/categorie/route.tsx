@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server'
 import dbConnect from '@/utils/database'
 import Restaurant from '@/models/restaurants';
+import { Types } from 'mongoose';
 
 export async function POST(request: Request) {
+  console.log("hi")
     try {
       const { searchParams } = new URL(request.url)
-      const restaurantName = searchParams.get('resto')
+      const restaurantId = searchParams.get('resto')
   
-      if (!restaurantName) {
+      if (!restaurantId) {
         return NextResponse.json(
           { error: 'Restaurant name is required' },
           { status: 400 }
@@ -15,7 +17,7 @@ export async function POST(request: Request) {
       }
   
       const body = await request.json()
-      const { name, description, order = 0 } = body
+      const { name, description, logo, order = 0 } = body
   
       // Validate required fields
       if (!name) {
@@ -26,15 +28,17 @@ export async function POST(request: Request) {
       }
   
       await dbConnect()
+      console.log("hi2")
   
       // Check if restaurant exists
-      const restaurant = await Restaurant.findOne({ name: restaurantName })
+      const restaurant = await Restaurant.findById({ _id: new Types.ObjectId(restaurantId) })
       if (!restaurant) {
         return NextResponse.json(
           { error: 'Restaurant not found' },
           { status: 404 }
         )
       }
+      console.log("hi3")
   
       // Check if category already exists
       const categoryExists = restaurant.categories.some(
@@ -46,20 +50,24 @@ export async function POST(request: Request) {
           { status: 400 }
         )
       }
+      console.log("hi4")
   
       // Add new category
       const newCategory = {
         name,
         description,
         order,
+        logo,
         items: [],
         active: true
       }
+      console.log("hi5")
   
       restaurant.categories.push(newCategory)
       await restaurant.save()
       return NextResponse.json(newCategory, { status: 201 })
     } catch (error) {
+      console.log("what happend 001", error);
       return NextResponse.json(
         { error: 'Failed to add category' },
         { status: 500 }

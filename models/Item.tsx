@@ -6,14 +6,14 @@ const ItemSchema = new Schema({
     price: { type: Number, required: true },
     image: String,
     restaurantId: { type: Schema.Types.ObjectId, ref: 'Restaurant', required: true },
-    isCombo: { type: Boolean, default: false },
-    comboItems: [{
-      item: { type: Schema.Types.ObjectId, ref: 'Item' },
-      quantity: { type: Number, default: 1 },
-      isOptional: { type: Boolean, default: false }
-    }],
-    customization: [{
+    modifiers: [{
       name: String,
+      type: { 
+        type: String, 
+        enum: ['SINGLE', 'MULTIPLE'], // SINGLE for radio buttons, MULTIPLE for checkboxes
+        default: 'SINGLE'
+      },
+      required: { type: Boolean, default: false },
       options: [{
         name: String,
         priceAdd: { type: Number, default: 0 }

@@ -8,8 +8,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 // Media
-import offer_1 from "@/public/burger_king.png"
-import offer_2 from "@/public/pizza_hut_ori.png"
 import { MdAddBusiness } from "react-icons/md";
 import { HiUpload } from "react-icons/hi"
 
@@ -17,6 +15,7 @@ import { HiUpload } from "react-icons/hi"
 import FoodHeader from "@/components/ui/food-header";
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
+import RestoBox from "@/components/ui/resto-box";
 import { NumberInputField, NumberInputRoot, NumberInputProps } from "@/components/ui/number-input"
 import {
   ColorPickerArea,
@@ -45,27 +44,17 @@ import {
     FileUploadList,
     FileUploadRoot,
     FileUploadTrigger,
-    FileUploadRootProps
 } from "@/components/ui/file-upload"
+import { Toaster, toaster } from "@/components/ui/toaster"
 
 // utils
 import isValidInternationalPhone from "@/utils/check/phoneNumber";
-import formatPhoneNumber from "@/utils/format/formatPhoneNumber";
-
-const resto = [{
-    name: "Burger King",
-    logo: offer_1,
-    id: "bajedj54d"
-}, {
-    name: "PizzaHut",
-    logo: offer_2,
-    id: "krknge87fezf"
-}]
 
 
 
 
 export default function (){
+    const [restoList, setRestoList] = useState<any[]>([]);
     useEffect(()=>{
         const fetchData = async ()=>{
             const res = await fetch("/api/list/restaurant");
@@ -73,9 +62,8 @@ export default function (){
             console.log("data we have is", data);
             return data;
         }
-        fetchData().then((resolve: any)=>{console.log("got data", resolve.value)}).catch((reason: any)=>{ console.log("") })
+        fetchData().then((resolve: any[])=>{setRestoList(resolve)}).catch((reason: any)=>{ console.log("") })
     }, [])
-
 
     const [open, setOpen] = useState<boolean>(false);
     const route = useRouter();
@@ -88,18 +76,31 @@ export default function (){
     const [imagePath, setImagePath] = useState("");
     const [numberOfTables, setNumberOfTables] = useState<number>(0);
 
+    useEffect(()=>{
+        if(error == "") return;
+        toaster.create({
+            title: `Error: ${error}`,
+            type: "error",
+        })
+    }, [error])
+
     const sendData = async () =>{
         let body = {
-            name, phoneNumber, address, brandColor, image: imagePath, tables: numberOfTables
+            name, phone: phoneNumber, address, brandColor, logo: imagePath, tables: numberOfTables
         }
-        if(!name) {
-            throw Error("Name is required");
-        }
-        if(!phoneNumber || !isValidInternationalPhone(phoneNumber)) {
-            throw Error("Phone Number isn't defined correctly");
-        }
-        if(numberOfTables<=0){
-            throw Error("Phone Number isn't defined correctly");
+        try{
+            if(!name) {
+                throw Error("Name is required");
+            }
+            if(!phoneNumber || !isValidInternationalPhone(phoneNumber)) {
+                throw Error("Phone Number isn't defined correctly");
+            }
+            if(numberOfTables<=0){
+                throw Error("Phone Number isn't defined correctly");
+            }
+        }catch(error: any){
+            console.log(error.message);
+            setError(error.message);
         }
         const replay = await fetch("/api/add/restaurants",{
             method: 'POST',
@@ -110,13 +111,13 @@ export default function (){
         });
         console.log("server responded with", replay)
     }
-
     return (
         <Box
             mt={{
                 base: "3rem"
             }}
         >
+            <Toaster />
             <FoodHeader customColor="black">
                 All restaurants
             </FoodHeader>
@@ -136,10 +137,10 @@ export default function (){
                 flexDir={"row"}
                 flexWrap={"wrap"}
             >
-                {resto.map((resto: any)=>(
+                {restoList.map((resto: any)=>(
                     <RestoBox
                         key={resto.name}
-                        action={() => route.push(`/admin/restaurants?rest=${resto.id}`)}
+                        action={() => route.push(`/admin/restaurants?rest=${resto._id}`)}
                         image={resto.logo}
                     />
                 ))}
@@ -197,14 +198,14 @@ export default function (){
                                         alignItems={"center"}
                                     >
                                         <ColorPicker />
-                                        <FileUploader fileName={`${name}_logo`} />
+                                        <FileUploader fileName={`${name}_logo`} setUrl={(url: string)=> { setImagePath(url) }} RaiseError={(error: string)=> setError(error)} />
                                     </Grid>
                                     <Field gap={0} label="Number of Tables" w={"full"}>
                                         <NumberInputRoot
                                             w={"full"}
                                             defaultValue="4"
                                             border={"1px solid #000000A0"}
-                                            // value={numberOfTables}
+                                            value={numberOfTables.toString() || '0'}
                                             onValueChange={(details: NumberInputProps)=> { setNumberOfTables(Number(details.value)) }}>
                                             <NumberInputField px={2}/>
                                         </NumberInputRoot>
@@ -217,19 +218,27 @@ export default function (){
                                 <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
                             </DrawerActionTrigger>
                                 <Button
+                                    border={"1px solid black"}
+                                    px={{ base: 5 }}
+                                    fontWeight={"semibold"}
+                                    color={"white"}
+                                    bg={"black"}
+                                    loading={loading}
+                                    loadingText={"Submiting"}
                                     onClick={async () => {
                                         setLoading(true);
                                         try{
                                             await sendData();
                                             setOpen(false);
+                                            route.push("/admin")
                                         }catch(error: any){
-                                            console.error("APP:", error);
+                                            console.log("APP:", error);
                                             setError(error.message)
                                         }finally{
                                             setLoading(false);
                                         }
                                     }}
-                                >Save</Button>
+                                >Submiting</Button>
                         </DrawerFooter>
                         <DrawerCloseTrigger />
                     </DrawerContent>
@@ -240,28 +249,6 @@ export default function (){
 }
 
 
-function RestoBox({ image, action, add=false }: { action: any, image?: any, add?: boolean}){
-    return (
-        <Button
-            aspectRatio={16/11}
-            onClick={action}
-            height={{ base: "13vh", md: "20vh"}}
-            border={"1px solid black"}
-            bg={"gray.50"}
-            _hover={{
-                bg: "gray.900",
-                color: "whiteAlpha.900"
-            }}
-            className="rounded-2xl overflow-hidden"
-        >
-            {
-                add ? <Icon minW={"100%"}><MdAddBusiness width={"100%"} /></Icon> : (
-                    <Image src={image} alt={"brand name"} />
-                )
-            }
-        </Button>
-    )
-}
 
 
 function ColorPicker(){
@@ -284,23 +271,26 @@ function ColorPicker(){
 }
 // type FileDetails = FileUploadFileAcceptDetails & { file: File }
 
-function FileUploader({ fileName } : {fileName: string}) {
+function FileUploader({ fileName, setUrl, RaiseError } : { fileName: string, setUrl: any, RaiseError: any }) {
     const [isUploading, setIsUploading] = useState(false)
-    
     async function handleUpload(details: FileUploadFileAcceptDetails) {
         setIsUploading(true)
         const formData = new FormData();
- 
         try {
             formData.append(fileName, details.files[0])
             const res = await fetch(`/api/add/image?file=${fileName}`, {
                 method: 'POST',
                 body: formData
             })
-            const { url } = await res.json()
+            console.log("res", res);
+            const { url } = await res.json();
+            if(!url) throw Error("No URL was generated");
+            console.log("url", url)
+            setUrl(url);
             // Handle successful upload - pass URL to parent etc.
         } catch (error) {
-            console.error('Upload failed:', error)
+            console.log('Upload failed:', error);
+            RaiseError(error);
             // Handle error - show toast etc.
         } finally {
             setIsUploading(false)

@@ -1,47 +1,23 @@
 "use client";
 
-import { Box, Flex, Tabs, Kbd, Table, Grid, Text } from "@chakra-ui/react"
-import {
-  ActionBarContent,
-  ActionBarRoot,
-  ActionBarSelectionTrigger,
-  ActionBarSeparator,
-} from "@/components/ui/action-bar"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useState } from "react"
+import { Box, Flex, Tabs, Grid, Text } from "@chakra-ui/react"
+import BasicInformation from "./basicInformation";
+import Categorie from "./categories"
+import Items from "./items"
 
 
 const items = [
   {
     title: "Basic Information's",
-    content: [
-        { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
-        { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
-        { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
-        { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
-        { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
-      ]
+    Content: ()=>(<BasicInformation />)
   },
   {
-    title: "Menus",
-    content: [
-        { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
-        { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
-        { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
-        { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
-        { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
-      ]
+    title: "Categories",
+    Content: ()=>(<Categorie />)
   },
   {
     title: "Items",
-    content: [
-        { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
-        { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
-        { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
-        { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
-        { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
-      ]
+    Content: ()=>(<Items />)
   },
 ]
 
@@ -72,7 +48,7 @@ export default function(){
                 animationDuration: "120ms",
               }}
             >
-              <FoodTable items={item.content} />
+              <item.Content />
             </Tabs.Content>
           ))}
         </Box>
@@ -83,78 +59,4 @@ export default function(){
 
 
 
-const FoodTable = ({ items }: { items: any}) => {
-  const [selection, setSelection] = useState<string[]>([])
 
-  const hasSelection = selection.length > 0
-  const indeterminate = hasSelection && selection.length < items.length
-
-  const rows = items.map((item: any) => (
-    <Table.Row
-      key={item.name}
-      data-selected={selection.includes(item.name) ? "" : undefined}
-      borderBottom={"1px solid #00000020"}
-    >
-      <Table.Cell>
-        <Checkbox
-          top="1"
-          aria-label="Select row"
-          checked={selection.includes(item.name)}
-          onCheckedChange={(changes: any) => {
-            setSelection((prev) =>
-              changes.checked
-                ? [...prev, item.name]
-                : selection.filter((name) => name !== item.name),
-            )
-          }}
-          border={"1px solid #00000010"}
-        />
-      </Table.Cell>
-      <Table.Cell>{item.name}</Table.Cell>
-      <Table.Cell>{item.category}</Table.Cell>
-      <Table.Cell>${item.price}</Table.Cell>
-    </Table.Row>
-  ))
-
-  return (
-    <>
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader w="6">
-              <Checkbox
-                top="1"
-                aria-label="Select all rows"
-                checked={indeterminate ? "indeterminate" : selection.length > 0}
-                onCheckedChange={(changes: any) => {
-                  setSelection(
-                    changes.checked ? items.map((item: any) => item.name) : [],
-                  )
-                }}
-              />
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>Product</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Price</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>{rows}</Table.Body>
-      </Table.Root>
-
-      <ActionBarRoot open={hasSelection}>
-        <ActionBarContent>
-          <ActionBarSelectionTrigger>
-            {selection.length} selected
-          </ActionBarSelectionTrigger>
-          <ActionBarSeparator />
-          <Button variant="outline" size="sm">
-            Delete <Kbd>⌫</Kbd>
-          </Button>
-          <Button variant="outline" size="sm">
-            Share <Kbd>T</Kbd>
-          </Button>
-        </ActionBarContent>
-      </ActionBarRoot>
-    </>
-  )
-}
