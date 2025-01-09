@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Grid, Flex, Fieldset, Input, FileUploadFileAcceptDetails, Textarea } from "@chakra-ui/react";
+import { Box, AspectRatio, Text, Grid, Flex, Fieldset, Input, FileUploadFileAcceptDetails, Textarea, createListCollection } from "@chakra-ui/react";
 
 // nextjs
 import { useRouter, useSearchParams } from "next/navigation";
@@ -22,13 +22,19 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import {
-    SelectContent,
-    SelectItem,
-    SelectLabel,
-    SelectRoot,
-    SelectTrigger,
-    SelectValueText,
-} from "@/components/ui/select"
+    DialogBody,
+    DialogCloseTrigger,
+    DialogContent,
+    DialogDescription,
+    DialogRoot,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+  
+import {
+    NativeSelectField,
+    NativeSelectRoot,
+} from "@/components/ui/native-select"
 import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import FoodCard from "@/components/ui/food-card";
@@ -42,15 +48,21 @@ import { Toaster, toaster } from "@/components/ui/toaster";
 
 // utils
 
-export default function BasicInformation(){
+export default function Items(){
     // const [restoList, setRestoList] = useState<any[]>([]);
+    const pathname = useSearchParams();
+    const route = useRouter();
+    const ID = pathname.get('rest');
+
+    
+    const [sizesWindow, setSizesWindow] = useState(false);
     const [open, setOpen] = useState(false);
     const [update, setUpdate] = useState(false);
     const [selected, setSelected] = useState("");
-    const [items, setCategories] = useState([]);
-    const pathname = useSearchParams();
-    const ID = pathname.get('rest');
-    const route = useRouter();
+    const [categories, setCategories] = useState([]);
+    const [items, setItems] = useState([]);
+    const [sizes, setSizes] = useState([]);
+    const [addons, setAddons] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
@@ -117,8 +129,26 @@ export default function BasicInformation(){
             console.log("data we have is", data);
             return data;
         }
+        const fetchCategory = async ()=>{
+            if(!ID) throw Error("undefined resto");
+            const res = await fetch(`/api/get/categorie?resto=${ID}`)
+            const data = await res.json();
+            console.log("we got ctegory list", data.categories);
+            return data.categories;
+        }
+        fetchCategory().then((resolve: any)=>{
+            const filter = resolve.map((item: any)=>{
+                return (
+                    {
+                        _id  : item._id,
+                        name : item.name
+                    }
+                )
+            });
+            setCategories(filter);
+            console.log("We got data and it's the following", filter)
+        })
         fetchData().then((resolve: any)=>{
-            setCategories(resolve);
             console.log("We got", resolve);
         }).catch((reason: any)=>{ console.log("error",reason) })
     }, [])
@@ -141,21 +171,21 @@ export default function BasicInformation(){
             <Toaster />
             <Grid templateColumns={{lg: "repeat(3, 1fr)", md: "repeat(2, 1fr)" , base:"repeat(1, 1fr)"}} gapX="6" gapY="3">
                 {items.map((value: any)=>{
-                return (
-                    <FoodCard
-                        key={value._id}
-                        action={()=>{
-                            setOpen(true);
-                            setSelected(value._id);
-                            setName(value.name);
-                            setImagePath(value.logo);
-                            setDescription(value.decription);
-                            setUpdate(true);
-                        }}
-                        active={value._id === selected}
-                        image={value.logo}
-                        name={value.name}
-                />)
+                    return (
+                        <FoodCard
+                            key={value._id}
+                            action={()=>{
+                                setOpen(true);
+                                setSelected(value._id);
+                                setName(value.name);
+                                setImagePath(value.logo);
+                                setDescription(value.decription);
+                                setUpdate(true);
+                            }}
+                            active={value._id === selected}
+                            image={value.logo}
+                            name={value.name}
+                    />)
                 })}
                 <DrawerRoot size={"lg"} open={open}>
                     <DrawerBackdrop />
@@ -218,15 +248,188 @@ export default function BasicInformation(){
                                     <Field gap={0} label="Ingredians">
                                         <Textarea px={2} border={"1px solid #000000A0"} name="name" value={ingredians} onChange={({ target: { value }}: {target: { value: string }})=> { setIngredians(value) } } />
                                     </Field>
-                                    <SelectRoot>
-                                        <SelectLabel />
-                                        <SelectTrigger>
-                                            <SelectValueText />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem />
-                                        </SelectContent>
-                                        </SelectRoot>
+                                    <NativeSelectRoot>
+                                        <NativeSelectField placeholder="Select Category">
+                                            {categories.map((categorie: any)=>{
+                                                console.log("items", categorie);
+                                                return (
+                                                    <option key={categorie._id} value={categorie._id}>{categorie.name}</option>
+                                                )
+                                            })}
+                                        </NativeSelectField>
+                                    </NativeSelectRoot>
+                                    <Flex
+                                        flexDir={"column"}
+                                        gap="2"
+                                    >
+                                        <FoodHeader>
+                                            Size's
+                                        </FoodHeader>
+                                        <Flex>
+                                            {
+                                                sizes.map((size: any)=>{
+                                                    return (
+                                                        <Flex 
+                                                            bg={"gray.400"}
+                                                            flexDir={"column"}
+                                                            px={{
+                                                                base: 3
+                                                            }}
+                                                            py={{
+                                                                base: 3
+                                                            }}
+                                                            rounded={"2xl"}
+                                                            color={"white"}
+                                                            minW={'5rem'}
+                                                            justifyContent={"center"}
+                                                            alignItems={"center"}
+                                                        >
+                                                            <Text ml={"auto"}>{size.name}</Text>
+                                                            <Text mr={"auto"}>+${size.price}</Text>
+                                                        </Flex>
+                                                    )
+                                                })
+                                            }
+                                            <DialogRoot placement="center">
+                                                <DialogTrigger asChild>
+                                                    <Flex
+                                                        as={Button}
+                                                        bg={"gray.400"}
+                                                        flexDir={"column"}
+                                                        px={{
+                                                            base: 3
+                                                        }}
+                                                        py={{
+                                                            base: 3
+                                                        }}
+                                                        rounded={"2xl"}
+                                                        color={"white"}
+                                                        minW={'5rem'}
+                                                        justifyContent={"center"}
+                                                        alignItems={"center"}
+                                                        _hover={{
+                                                            bg: "gray.600",
+                                                            cursor: "pointer"
+                                                        }}
+                                                        onClick={()=>setSizesWindow(true)}
+                                                    >
+                                                        <Text>+</Text>
+                                                    </Flex>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogBody pt="4">
+                                                        <FoodHeader>Add Sizes</FoodHeader>
+                                                        <DialogDescription mt="4">
+                                                            <Grid
+                                                                gridTemplateColumns={{ base: '1fr 1fr' }}
+                                                                gap={{
+                                                                    base: 5
+                                                                }}
+                                                                justifyContent={"space-around"}
+                                                                w={"full"}
+                                                                alignContent={"center"}
+                                                                alignItems={"center"}
+                                                            >
+                                                                <Field gap={0} label="Size Name">
+                                                                    <Input px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
+                                                                </Field>
+                                                                <Field gap={0} label="Price Added">
+                                                                    <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(value) }} />
+                                                                </Field>
+                                                            </Grid>
+                                                        </DialogDescription>
+                                                    </DialogBody>
+                                                    <DialogCloseTrigger top="0" insetEnd="-12" bg="bg" />
+                                                </DialogContent>
+                                                </DialogRoot>
+                                        </Flex>
+                                    </Flex>
+                                    <Flex
+                                        flexDir={"column"}
+                                        gap="2"
+                                    >
+                                        <FoodHeader>
+                                            Add on's
+                                        </FoodHeader>
+                                        <Flex>
+                                            {
+                                                addons.map((size: any)=>{
+                                                    return (
+                                                        <Flex 
+                                                            bg={"gray.400"}
+                                                            flexDir={"column"}
+                                                            px={{
+                                                                base: 3
+                                                            }}
+                                                            py={{
+                                                                base: 3
+                                                            }}
+                                                            rounded={"2xl"}
+                                                            color={"white"}
+                                                            minW={'5rem'}
+                                                            justifyContent={"center"}
+                                                            alignItems={"center"}
+                                                        >
+                                                            <Text ml={"auto"}>{size.name}</Text>
+                                                            <Text mr={"auto"}>+${size.price}</Text>
+                                                        </Flex>
+                                                    )
+                                                })
+                                            }
+                                            <DialogRoot placement="center">
+                                                <DialogTrigger asChild>
+                                                    <Flex
+                                                        as={Button}
+                                                        bg={"gray.400"}
+                                                        flexDir={"column"}
+                                                        px={{
+                                                            base: 3
+                                                        }}
+                                                        py={{
+                                                            base: 3
+                                                        }}
+                                                        rounded={"2xl"}
+                                                        color={"white"}
+                                                        minW={'5rem'}
+                                                        justifyContent={"center"}
+                                                        alignItems={"center"}
+                                                        _hover={{
+                                                            bg: "gray.600",
+                                                            cursor: "pointer"
+                                                        }}
+                                                        onClick={()=>setSizesWindow(true)}
+                                                    >
+                                                        <Text>+</Text>
+                                                    </Flex>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogBody pt="4">
+                                                        <FoodHeader>Add Sizes</FoodHeader>
+                                                        <DialogDescription mt="4">
+                                                            <Grid
+                                                                gridTemplateColumns={{ base: '1fr 1fr' }}
+                                                                gap={{
+                                                                    base: 5
+                                                                }}
+                                                                justifyContent={"space-around"}
+                                                                w={"full"}
+                                                                alignContent={"center"}
+                                                                alignItems={"center"}
+                                                            >
+                                                                <Field gap={0} label="Size Name">
+                                                                    <Input px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
+                                                                </Field>
+                                                                <Field gap={0} label="Price Added">
+                                                                    <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(value) }} />
+                                                                </Field>
+                                                            </Grid>
+                                                        </DialogDescription>
+                                                    </DialogBody>
+                                                    <DialogCloseTrigger top="0" insetEnd="-12" bg="bg" />
+                                                </DialogContent>
+                                                </DialogRoot>
+                                        </Flex>
+                                    </Flex>
                                 </Fieldset.Content>
                             </Fieldset.Root>
                         </DrawerBody>

@@ -1,9 +1,9 @@
 // app/api/restaurants/[restaurantId]/items/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-import dbConnect from '@/utils/database'
-import Restaurant from '@/models/restaurants'
-import Item from '@/models/Item'
-import { isValidObjectId } from 'mongoose'
+import { NextRequest, NextResponse } from 'next/server';
+import dbConnect from '@/utils/database';
+import Restaurant from '@/models/restaurants';
+import Item from '@/models/Item';
+import { isValidObjectId } from 'mongoose';
 
 export async function GET(
   request: NextRequest,
@@ -54,8 +54,9 @@ export async function GET(
     }
 
     // If no category specified, get all restaurant items
-    const items = await Item.find(baseQuery)
-    return NextResponse.json(items)
+    const items = await Item.find(baseQuery);
+    console.log("ITEMS Requested", items);
+    return NextResponse.json(items);
 
   } catch (error) {
     console.error('Error fetching items:', error)

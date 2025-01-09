@@ -29,7 +29,6 @@ import FoodHeader from "./food-header";
 
 export default function ({ side=true, price='0.01', description, active=false, action, name, specialAdminAdd=false, image=Steak.src } : { description?: string, side?: boolean, image?: any, specialAdminAdd?: boolean, name: string, action?: any, active?: boolean, price?: string | number }){
     const [open, setOpen] = useState(false)
-    side = false
     return (
         <CardRoot overflow="hidden" flexDirection={side ? "row" : "column"} className="border border-[#eff0f6] rounded-2xl w-fit"
             _hover={{
