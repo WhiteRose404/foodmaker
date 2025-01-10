@@ -29,6 +29,7 @@ import {
     DialogRoot,
     DialogTitle,
     DialogTrigger,
+    DialogFooter
 } from "@/components/ui/dialog"
   
 import {
@@ -331,7 +332,7 @@ export default function Items(){
                                                                 alignItems={"center"}
                                                             >
                                                                 <Field gap={0} label="Size Name">
-                                                                    <Input px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
+                                                                    <Input placeholder={"XL, XXL..."} px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
                                                                 </Field>
                                                                 <Field gap={0} label="Price Added">
                                                                     <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(value) }} />
@@ -352,30 +353,28 @@ export default function Items(){
                                             Add on's
                                         </FoodHeader>
                                         <Flex>
-                                            {
-                                                addons.map((size: any)=>{
-                                                    return (
-                                                        <Flex 
-                                                            bg={"gray.400"}
-                                                            flexDir={"column"}
-                                                            px={{
-                                                                base: 3
-                                                            }}
-                                                            py={{
-                                                                base: 3
-                                                            }}
-                                                            rounded={"2xl"}
-                                                            color={"white"}
-                                                            minW={'5rem'}
-                                                            justifyContent={"center"}
-                                                            alignItems={"center"}
-                                                        >
-                                                            <Text ml={"auto"}>{size.name}</Text>
-                                                            <Text mr={"auto"}>+${size.price}</Text>
-                                                        </Flex>
-                                                    )
-                                                })
-                                            }
+                                            {addons.map((size: any)=>{
+                                                return (
+                                                    <Flex 
+                                                        bg={"gray.400"}
+                                                        flexDir={"column"}
+                                                        px={{
+                                                            base: 3
+                                                        }}
+                                                        py={{
+                                                            base: 3
+                                                        }}
+                                                        rounded={"2xl"}
+                                                        color={"white"}
+                                                        minW={'5rem'}
+                                                        justifyContent={"center"}
+                                                        alignItems={"center"}
+                                                    >
+                                                        <Text ml={"auto"}>{size.name}</Text>
+                                                        <Text mr={"auto"}>+${size.price}</Text>
+                                                    </Flex>
+                                                )
+                                            })}
                                             <DialogRoot placement="center">
                                                 <DialogTrigger asChild>
                                                     <Flex
@@ -397,14 +396,13 @@ export default function Items(){
                                                             bg: "gray.600",
                                                             cursor: "pointer"
                                                         }}
-                                                        onClick={()=>setSizesWindow(true)}
                                                     >
                                                         <Text>+</Text>
                                                     </Flex>
                                                 </DialogTrigger>
                                                 <DialogContent>
                                                     <DialogBody pt="4">
-                                                        <FoodHeader>Add Sizes</FoodHeader>
+                                                        <FoodHeader>Add On's</FoodHeader>
                                                         <DialogDescription mt="4">
                                                             <Grid
                                                                 gridTemplateColumns={{ base: '1fr 1fr' }}
@@ -417,7 +415,7 @@ export default function Items(){
                                                                 alignItems={"center"}
                                                             >
                                                                 <Field gap={0} label="Size Name">
-                                                                    <Input px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
+                                                                    <Input placeholder={"Soda, Extra cheese..."} px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
                                                                 </Field>
                                                                 <Field gap={0} label="Price Added">
                                                                     <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(value) }} />
@@ -426,8 +424,11 @@ export default function Items(){
                                                         </DialogDescription>
                                                     </DialogBody>
                                                     <DialogCloseTrigger top="0" insetEnd="-12" bg="bg" />
+                                                    <DialogFooter>
+                                                        <DialogCloseTrigger top="0" insetEnd="12" bg="bg"></DialogCloseTrigger>
+                                                    </DialogFooter>
                                                 </DialogContent>
-                                                </DialogRoot>
+                                            </DialogRoot>
                                         </Flex>
                                     </Flex>
                                 </Fieldset.Content>

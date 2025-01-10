@@ -137,7 +137,7 @@ export default function (){
                 flexDir={"row"}
                 flexWrap={"wrap"}
             >
-                {restoList.map((resto: any)=>(
+                {restoList?.map((resto: any)=>(
                     <RestoBox
                         key={resto.name}
                         action={() => route.push(`/admin/restaurants?rest=${resto._id}`)}
