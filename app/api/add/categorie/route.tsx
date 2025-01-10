@@ -28,7 +28,6 @@ export async function POST(request: Request) {
       }
   
       await dbConnect()
-      console.log("hi2")
   
       // Check if restaurant exists
       const restaurant = await Restaurant.findById({ _id: new Types.ObjectId(restaurantId) })
@@ -38,7 +37,6 @@ export async function POST(request: Request) {
           { status: 404 }
         )
       }
-      console.log("hi3")
   
       // Check if category already exists
       const categoryExists = restaurant.categories.some(
@@ -50,7 +48,6 @@ export async function POST(request: Request) {
           { status: 400 }
         )
       }
-      console.log("hi4")
   
       // Add new category
       const newCategory = {

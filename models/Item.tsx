@@ -1,4 +1,16 @@
-import { Schema, model, models } from 'mongoose'
+import { Schema, model, models } from 'mongoose';
+
+const SizeSchema = new Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true }
+}, { _id: false });
+
+const AddonSchema = new Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  available: { type: Boolean, default: true }
+}, { _id: false });
+
 
 const ItemSchema = new Schema({
     name: { type: String, required: true },
@@ -6,21 +18,26 @@ const ItemSchema = new Schema({
     price: { type: Number, required: true },
     image: String,
     restaurantId: { type: Schema.Types.ObjectId, ref: 'Restaurant', required: true },
-    modifiers: [{
-      name: String,
-      type: { 
-        type: String, 
-        enum: ['SINGLE', 'MULTIPLE'], // SINGLE for radio buttons, MULTIPLE for checkboxes
-        default: 'SINGLE'
-      },
-      required: { type: Boolean, default: false },
-      options: [{
-        name: String,
-        priceAdd: { type: Number, default: 0 }
-      }]
-    }],
+    sizes: {
+      type: [SizeSchema],
+      default: []
+    },
+    addons: {
+      type: [AddonSchema],
+      default: []
+    },
     available: { type: Boolean, default: true }
 }, { timestamps: true })
 
-const Item = models.Item || model('Item', ItemSchema)
-export default Item
+// Create indexes for common queries
+// ItemSchema.index({ name: 1 });
+// ItemSchema.index({ price: 1 });
+
+// Add validation for price
+ItemSchema.path('price').validate(function(price) {
+  return price >= 0;
+}, 'Price must be a non-negative number');
+
+const Item = models.Item || model('Item', ItemSchema);
+
+export default Item;

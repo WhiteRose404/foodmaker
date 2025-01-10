@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, AspectRatio, Text, Grid, Flex, Fieldset, Input, FileUploadFileAcceptDetails, Textarea, createListCollection } from "@chakra-ui/react";
+import { Text, Grid, Flex, Fieldset, Input, FileUploadFileAcceptDetails, Textarea } from "@chakra-ui/react";
 
 // nextjs
 import { useRouter, useSearchParams } from "next/navigation";
@@ -56,27 +56,41 @@ export default function Items(){
     const ID = pathname.get('rest');
 
     
-    const [sizesWindow, setSizesWindow] = useState(false);
     const [open, setOpen] = useState(false);
     const [update, setUpdate] = useState(false);
     const [selected, setSelected] = useState("");
     const [categories, setCategories] = useState([]);
+    const [categorie, setCategorie] = useState({});
     const [items, setItems] = useState([]);
-    const [sizes, setSizes] = useState([]);
-    const [addons, setAddons] = useState([]);
+    const [sizes, setSizes] = useState<any[]>([]);
+    const [addons, setAddons] = useState<any[]>([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
+    const [sizeName, setSizeName] = useState("");
+    const [sizePrice, setSizePrice] = useState("");
+    const [addonName, setAddonName] = useState("");
+    const [addonPrice, setAddonPrice] = useState("");
+    // const [addOns, setAddOns] = useState("");
+    const [price, setPrice] = useState<number>(0);
     const [description, setDescription] = useState("");
     const [ingredians, setIngredians] = useState("");
     const [imagePath, setImagePath] = useState("");
     
-    const addCategorie = async () =>{
+    const addItem = async () =>{
         let body = {
-            name, description, logo: imagePath
+            name, description, image: imagePath, price, restaurantId: ID, sizes, addons, categoryName: categorie
         }
         try{
+            if(!categorie) {
+                throw Error("ID is required");
+            }
+            if(!ID) {
+                throw Error("ID is required");
+            }
+            if(!price) {
+                throw Error("price is required");
+            }
             if(!name) {
                 throw Error("Name is required");
             }
@@ -87,7 +101,7 @@ export default function Items(){
             console.log(error.message);
             setError(error.message);
         }
-        const replay = await fetch(`/api/add/categorie?resto=${ID}`,{
+        const replay = await fetch(`/api/add/items?resto=${ID}`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,9 +110,9 @@ export default function Items(){
         });
         console.log("server responded with", replay)
     }
-    const updateCategorie = async () =>{
+    const updateItem = async () =>{
         let body = {
-            name, description, logo: imagePath
+            name, description, image: imagePath, price, restaurantId: ID, sizes, addons, categoryName: categorie
         }
         console.log("body has", body)
         try{
@@ -113,8 +127,8 @@ export default function Items(){
             console.log(error.message);
             setError(error.message);
         }
-        const replay = await fetch(`/api/update/categorie?resto=${ID}&categoryId=${selected}`,{
-            method: 'PUT',
+        const replay = await fetch(`/api/update/item?item=${selected}`,{
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -125,10 +139,10 @@ export default function Items(){
     useEffect(()=>{
         const fetchData = async ()=>{
             if(!ID) throw Error("undefined resto")
-            const res = await fetch(`/api/get/item?resto=${ID}`);
+            const res = await fetch(`/api/get/items?resto=${ID}`);
             const data = await res.json();
-            console.log("data we have is", data);
-            return data;
+            console.log("items we have are", data);
+            return data.items;
         }
         const fetchCategory = async ()=>{
             if(!ID) throw Error("undefined resto");
@@ -151,7 +165,10 @@ export default function Items(){
         })
         fetchData().then((resolve: any)=>{
             console.log("We got", resolve);
+            setItems(resolve);
         }).catch((reason: any)=>{ console.log("error",reason) })
+        if(!ID)
+            route.push("/admin")
     }, [])
     useEffect(()=>{
         if(error == "") return;
@@ -179,13 +196,22 @@ export default function Items(){
                                 setOpen(true);
                                 setSelected(value._id);
                                 setName(value.name);
-                                setImagePath(value.logo);
+                                setImagePath(value.image);
                                 setDescription(value.decription);
+                                setPrice(value.price);
+                                setSizes(value.sizes);
+                                setAddons(value.addons);
+                                setCategorie(value.categorie);
                                 setUpdate(true);
                             }}
                             active={value._id === selected}
-                            image={value.logo}
+                            image={value.image}
+                            description={value.description}
+                            price={value.price}
+                            // addons={value.addons}
+                            // sizes={value.sizes}
                             name={value.name}
+                            specialAdd
                     />)
                 })}
                 <DrawerRoot size={"lg"} open={open}>
@@ -196,6 +222,11 @@ export default function Items(){
                             setOpen(true);
                             setName("");
                             setImagePath("");
+                            setDescription("");
+                            setPrice(0);
+                            setSizes([]);
+                            setAddons([]);
+                            setCategorie("");
                             setUpdate(false);
                         }}
                         name="New Item"
@@ -228,7 +259,7 @@ export default function Items(){
                                             <Input px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
                                         </Field>
                                         <Field gap={0} label="Price">
-                                            <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(value) }} />
+                                            <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(Number(value)) }} />
                                         </Field>
                                     </Grid>
                                     <Grid
@@ -250,11 +281,15 @@ export default function Items(){
                                         <Textarea px={2} border={"1px solid #000000A0"} name="name" value={ingredians} onChange={({ target: { value }}: {target: { value: string }})=> { setIngredians(value) } } />
                                     </Field>
                                     <NativeSelectRoot>
-                                        <NativeSelectField placeholder="Select Category">
+                                        <NativeSelectField
+                                            placeholder="Select Category"
+                                            onChange={({ target: { value }} : any)=> setCategorie(value)}
+                                            // variant="plain"
+                                        >
                                             {categories.map((categorie: any)=>{
                                                 console.log("items", categorie);
                                                 return (
-                                                    <option key={categorie._id} value={categorie._id}>{categorie.name}</option>
+                                                    <option key={categorie.name} value={categorie.name}>{categorie.name}</option>
                                                 )
                                             })}
                                         </NativeSelectField>
@@ -266,11 +301,16 @@ export default function Items(){
                                         <FoodHeader>
                                             Size's
                                         </FoodHeader>
-                                        <Flex>
+                                        <Flex
+                                            justifyContent={"flex-start"}
+                                            flexWrap={'wrap'}
+                                            gap={2}
+                                        >
                                             {
                                                 sizes.map((size: any)=>{
                                                     return (
-                                                        <Flex 
+                                                        <Flex
+                                                            key={size.name}
                                                             bg={"gray.400"}
                                                             flexDir={"column"}
                                                             px={{
@@ -284,9 +324,14 @@ export default function Items(){
                                                             minW={'5rem'}
                                                             justifyContent={"center"}
                                                             alignItems={"center"}
+                                                            _hover={{
+                                                                bg: "red.600",
+                                                                cursor: "pointer"
+                                                            }}
+                                                            onClick={()=> setSizes(sizes.filter(((value: any) => value.name != size.name && value.price != size.price)))}
                                                         >
-                                                            <Text ml={"auto"}>{size.name}</Text>
-                                                            <Text mr={"auto"}>+${size.price}</Text>
+                                                            <Text mr={"auto"}>{size.name}</Text>
+                                                            <Text ml={"auto"}>+${size.price}</Text>
                                                         </Flex>
                                                     )
                                                 })
@@ -307,12 +352,11 @@ export default function Items(){
                                                         color={"white"}
                                                         minW={'5rem'}
                                                         justifyContent={"center"}
-                                                        alignItems={"center"}
+                                                        alignItems={"stretch"}
                                                         _hover={{
                                                             bg: "gray.600",
                                                             cursor: "pointer"
                                                         }}
-                                                        onClick={()=>setSizesWindow(true)}
                                                     >
                                                         <Text>+</Text>
                                                     </Flex>
@@ -332,15 +376,27 @@ export default function Items(){
                                                                 alignItems={"center"}
                                                             >
                                                                 <Field gap={0} label="Size Name">
-                                                                    <Input placeholder={"XL, XXL..."} px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
+                                                                    <Input placeholder={"XL, XXL..."} px={2} border={"1px solid #000000A0"} name="name" value={sizeName} onChange={({ target: { value }}: {target: { value: string }})=>{ setSizeName(value) }} />
                                                                 </Field>
                                                                 <Field gap={0} label="Price Added">
-                                                                    <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(value) }} />
+                                                                    <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={sizePrice} onChange={({ target: { value }}: {target: { value: string }})=>{ setSizePrice(value) }} />
                                                                 </Field>
                                                             </Grid>
                                                         </DialogDescription>
                                                     </DialogBody>
                                                     <DialogCloseTrigger top="0" insetEnd="-12" bg="bg" />
+                                                    <DialogFooter>
+                                                        <DialogCloseTrigger top="0" insetY="44" bg="gray.600" color="white" _hover={{ bg: "gray.800" }} px={4} py={2}
+                                                            onClick={()=>{
+                                                                const sizeItem = {
+                                                                    name: sizeName, price: Number(sizePrice)
+                                                                }
+                                                                setSizes([...sizes, sizeItem])
+                                                            }}
+                                                        >
+                                                            Add
+                                                        </DialogCloseTrigger>
+                                                    </DialogFooter>
                                                 </DialogContent>
                                                 </DialogRoot>
                                         </Flex>
@@ -352,10 +408,15 @@ export default function Items(){
                                         <FoodHeader>
                                             Add on's
                                         </FoodHeader>
-                                        <Flex>
+                                        <Flex
+                                            justifyContent={"flex-start"}
+                                            flexWrap={'wrap'}
+                                            gap={2}
+                                        >
                                             {addons.map((size: any)=>{
                                                 return (
-                                                    <Flex 
+                                                    <Flex
+                                                        key={size.name}
                                                         bg={"gray.400"}
                                                         flexDir={"column"}
                                                         px={{
@@ -369,9 +430,14 @@ export default function Items(){
                                                         minW={'5rem'}
                                                         justifyContent={"center"}
                                                         alignItems={"center"}
+                                                        _hover={{
+                                                            bg: "red.600",
+                                                            cursor: "pointer"
+                                                        }}
+                                                        onClick={()=> setAddons(addons.filter(((value: any) => value.name != size.name && value.price != size.price)))}
                                                     >
-                                                        <Text ml={"auto"}>{size.name}</Text>
-                                                        <Text mr={"auto"}>+${size.price}</Text>
+                                                        <Text mr={"auto"}>{size.name}</Text>
+                                                        <Text ml={"auto"}>+${size.price}</Text>
                                                     </Flex>
                                                 )
                                             })}
@@ -391,11 +457,12 @@ export default function Items(){
                                                         color={"white"}
                                                         minW={'5rem'}
                                                         justifyContent={"center"}
-                                                        alignItems={"center"}
+                                                        alignItems={"stretch"}
                                                         _hover={{
                                                             bg: "gray.600",
                                                             cursor: "pointer"
                                                         }}
+                                                        gap={2}
                                                     >
                                                         <Text>+</Text>
                                                     </Flex>
@@ -415,17 +482,26 @@ export default function Items(){
                                                                 alignItems={"center"}
                                                             >
                                                                 <Field gap={0} label="Size Name">
-                                                                    <Input placeholder={"Soda, Extra cheese..."} px={2} border={"1px solid #000000A0"} name="name" value={name} onChange={({ target: { value }}: {target: { value: string }})=>{ setName(value) }} />
+                                                                    <Input placeholder={"Soda, Extra cheese..."} px={2} border={"1px solid #000000A0"} name="name" value={addonName} onChange={({ target: { value }}: {target: { value: string }})=>{ setAddonName(value) }} />
                                                                 </Field>
                                                                 <Field gap={0} label="Price Added">
-                                                                    <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={price} onChange={({ target: { value }}: {target: { value: string }})=>{ setPrice(value) }} />
+                                                                    <Input type="number" px={2} border={"1px solid #000000A0"} name="price" value={addonPrice} onChange={({ target: { value }}: {target: { value: string }})=>{ setAddonPrice(value) }} />
                                                                 </Field>
                                                             </Grid>
                                                         </DialogDescription>
                                                     </DialogBody>
                                                     <DialogCloseTrigger top="0" insetEnd="-12" bg="bg" />
                                                     <DialogFooter>
-                                                        <DialogCloseTrigger top="0" insetEnd="12" bg="bg"></DialogCloseTrigger>
+                                                        <DialogCloseTrigger top="0" insetY="44" bg="gray.600" color="white" _hover={{ bg: "gray.800" }} px={4} py={2}
+                                                            onClick={()=>{
+                                                                const addonItem = {
+                                                                    name: addonName, price: Number(addonPrice)
+                                                                }
+                                                                setAddons([...addons, addonItem])
+                                                            }}
+                                                        >
+                                                            Add
+                                                        </DialogCloseTrigger>
                                                     </DialogFooter>
                                                 </DialogContent>
                                             </DialogRoot>
@@ -450,8 +526,11 @@ export default function Items(){
                                         setLoading(true);
                                         try{
                                             if(update)
-                                                await updateCategorie();
-                                            else await addCategorie();
+                                                await updateItem();
+                                            else await addItem();
+                                            // if(update)
+                                            //     await updateCategorie();
+                                            // else await addCategorie();
                                             setOpen(false);
                                             // route.push("/admin");
                                         }catch(error: any){

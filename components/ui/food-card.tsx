@@ -27,7 +27,7 @@ import {
 import FoodHeader from "./food-header";
 
 
-export default function ({ side=true, price='0.01', description, active=false, action, name, specialAdminAdd=false, image=Steak.src } : { description?: string, side?: boolean, image?: any, specialAdminAdd?: boolean, name: string, action?: any, active?: boolean, price?: string | number }){
+export default function ({ side=true, price='0.01', description, active=false, action, name, specialAdd=false,specialAdminAdd=false, image=Steak.src } : { specialAdd?: boolean, description?: string, side?: boolean, image?: any, specialAdminAdd?: boolean, name: string, action?: any, active?: boolean, price?: string | number }){
     const [open, setOpen] = useState(false)
     return (
         <CardRoot overflow="hidden" flexDirection={side ? "row" : "column"} className="border border-[#eff0f6] rounded-2xl w-fit"
@@ -73,6 +73,7 @@ export default function ({ side=true, price='0.01', description, active=false, a
                     <Flex
                         flexDir={'row'}
                         justifyContent={"space-between"}
+                        // mb={1}
                     >
                         <Text
                             fontSize={{
@@ -83,7 +84,7 @@ export default function ({ side=true, price='0.01', description, active=false, a
                             {specialAdminAdd ? "NEW" : `$${price}`}
                         </Text>
                         <FoodButton onClick={action} CustomIcon={specialAdminAdd ? GiShuttlecock : undefined}>
-                            {specialAdminAdd ? "Modify" : "Add"}
+                            {specialAdminAdd || specialAdd ? "Modify" : "Add"}
                         </FoodButton>
                         {/* <DialogRoot size={"lg"} placement={"center"} open={open} onOpenChange={(e) => setOpen(e.open)}>
                             <DialogTrigger asChild>
