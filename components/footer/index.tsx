@@ -11,6 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa'
 import { ReactNode } from 'react'
+import Image from 'next/image'
+import ThemeLogo from '@/public/theme-logo.png'
 
 const SocialButton = ({
   children,
@@ -55,7 +57,7 @@ export default function SmallWithSocial() {
         direction={{ base: 'column', md: 'row' }}
         justifyContent={{ base: 'center' }}
         alignItems={{ base: 'center', md: 'center' }}>
-        <Text>Yoedd</Text>
+        <Image src={ThemeLogo} alt='company logo' width={100}/>
         <Stack direction={'row'} ml={"auto"}>
           <SocialButton label={'Twitter'} href={'#'}>
             <FaTwitter />

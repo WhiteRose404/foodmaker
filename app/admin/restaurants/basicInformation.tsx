@@ -180,6 +180,31 @@ export default function BasicInformation(){
                     >
                         Save
                     </Button>
+                    <Button
+                        bg={"red.600"}
+                        color={"white"}
+                        loading={loading}
+                        loadingText={"Saving"}
+                        _hover={{
+                            bg: "red"
+                        }}
+                        onClick={async () => {
+                            setLoading(true);
+                            try{
+                                await fetch(`/api/delete/restaurent?resto=${ID}`, {
+                                    method: "DELETE"
+                                });
+                                console.log("sent")
+                            }catch(error: any){
+                                console.log("APP:", error);
+                                setError(error.message)
+                            }finally{
+                                setLoading(false);
+                            }
+                        }}
+                    >
+                        Delete Resto
+                    </Button>
                 </Flex>
             </Fieldset.Content>
         </Fieldset.Root>

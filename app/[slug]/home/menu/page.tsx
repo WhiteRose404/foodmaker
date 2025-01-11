@@ -80,7 +80,7 @@ export default function (){
                 }}
                 
                 >
-                <FoodHeader customColor="#FF006B">Flame Grill Burgers</FoodHeader>
+                <FoodHeader customColor="#FF006B">{selected}</FoodHeader>
                 <Grid templateColumns={{lg: "repeat(3, 1fr)", md: "repeat(2, 1fr)" , base:"repeat(1, 1fr)"}} gapX="6" gapY="3">
                     {displayItems.map((item: any)=>{
                         return (

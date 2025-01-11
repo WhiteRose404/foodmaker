@@ -141,9 +141,9 @@ const DesktopNav = ({ admin, links}: {admin: boolean, links: LinkType[]})=>{
               {items.length > 0 ? 
                 (
                   <>
-                    {items.map((item: any)=>{
+                    {items.map((item: any, index: number)=>{
                         return (
-                            <FoodCard key={item._id} name={item.name} price={item.price} description={item.description} image={item.logo} side={true}
+                            <FoodCard key={`${item._id}-${index}`} name={item.name} price={item.price} description={item.description} image={item.logo} side={true}
                                 customMessage='Delete'
                                 action={()=>{
                                   setItems(items.filter((value: any)=>item._id != value._id))

@@ -1,6 +1,7 @@
 "use client"
 
-import { Box, Flex, Grid, Image, Icon } from "@chakra-ui/react";
+import { Box, Flex, Grid, Image, Icon, Input } from "@chakra-ui/react";
+import { Field } from "@/components/ui/field";
 
 // nextjs
 import { useRouter, usePathname } from "next/navigation";
@@ -48,7 +49,13 @@ export default function Home() {
   const route = useRouter();
   const { resto, setItems, items } = useAppContext();
   //
-  const [selectedItem, setSelectedItem] = useState({});
+  const [selectedItem, setSelectedItem] = useState({
+    commentaire: "",
+    quantity: 1,
+    price: 0
+  });
+  const [commentaire,setCommentaire] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
   //
   const [category, setCategory] = useState([]);
@@ -202,9 +209,13 @@ export default function Home() {
                 })}
             </Grid>
         </Box>
-        <FoodDialog open={open} setOpen={setOpen} item={selectedItem} 
+        <FoodDialog open={open} setOpen={setOpen} item={selectedItem} commentaire={commentaire} setCommentaire={setCommentaire} quantity={quantity} setQuantity={setQuantity}
             action={()=>{
-                setItems([...items, selectedItem]);
+                const chossed = {...selectedItem};
+                chossed.quantity = quantity;
+                chossed.price = quantity * chossed.price;
+                chossed.commentaire = commentaire;
+                setItems([...items, chossed]);
             }}
         />
     </Box>
@@ -212,14 +223,9 @@ export default function Home() {
 }
 
 
-function FoodDialog({ open, setOpen, item, action}: any){
+function FoodDialog({ open, setOpen, item, action, quantity, setQuantity, commentaire, setCommentaire}: any){
     return (
         <DialogRoot size={"lg"} placement={"center"} open={open} onOpenChange={(e: any) => setOpen(e.open)}>
-            {/* <DialogTrigger asChild>
-                <FoodButton onClick={() => setOpen(true)}>
-                    Add
-                </FoodButton>
-            </DialogTrigger> */}
             <DialogContent>
             <DialogHeader>
                 <DialogTitle
@@ -256,18 +262,83 @@ function FoodDialog({ open, setOpen, item, action}: any){
                     </Box>
                     </DialogTitle>
             </DialogHeader>
-            <DialogBody>
-                <Box>
-                    <Text fontWeight={"semibold"}>Quantity</Text>
+            <DialogBody
+                as={Flex}
+                flexDir={"column"}
+                gap={"2"}
+            >
+                <Flex
+                    flexDir={"column"}
+
+                >
+                    <Field gap={0} label="Quantity">
+                        <Input type="number" px={2} border={"1px solid #000000A0"} name="quantity" value={quantity} onChange={({ target: { value }}: {target: { value: string }})=>{ setQuantity(Number(value)) }} />
+                    </Field>
                     <Box
                         as={Flex}
                         flexDir={"column"}
                         gap={1}
                     >
-                        <Text fontSize={"0.95rem"} fontWeight={"semibold"}>Special Instructions</Text>
-                        <Textarea placeholder="Add Notes..." p={1} autoresize />
+                        <Text fontSize={"0.85rem"} fontWeight={"semibold"}>Special Instructions</Text>
+                        <Textarea placeholder="Add Notes..." p={1} autoresize value={commentaire} onChange={({ target: { value }}: {target: { value: string }})=>{ setCommentaire(value) }}/>
                     </Box>
-                </Box>
+                </Flex>
+                {item.sizes?.map((size: any)=>{
+                    return (
+                        <Flex
+                            key={size.name}
+                            bg={"gray.400"}
+                            flexDir={"column"}
+                            px={{
+                                base: 3
+                            }}
+                            py={{
+                                base: 3
+                            }}
+                            rounded={"2xl"}
+                            color={"white"}
+                            maxW={'5rem'}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            _hover={{
+                                bg: "blackAlpha.900",
+                                cursor: "pointer"
+                            }}
+                            // onClick={()=> setSizes(sizes.filter(((value: any) => value.name != size.name && value.price != size.price)))}
+                        >
+                            <Text mr={"auto"}>{size.name}</Text>
+                            <Text ml={"auto"}>+${size.price}</Text>
+                        </Flex>
+                    )
+                })}
+                {item.addons?.map((size: any)=>{
+                    return (
+                        <Flex
+                            key={size.name}
+                            bg={"gray.400"}
+                            flexDir={"column"}
+                            px={{
+                                base: 3
+                            }}
+                            py={{
+                                base: 3
+                            }}
+                            rounded={"2xl"}
+                            color={"white"}
+                            maxW={'10rem'}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            _hover={{
+                                bg: "blackAlpha.800",
+                                cursor: "pointer"
+                            }}
+                            // onClick={()=> setSizes(sizes.filter(((value: any) => value.name != size.name && value.price != size.price)))}
+                        >
+                            <Text mr={"auto"}>{size.name}</Text>
+                            <Text ml={"auto"}>+${size.price}</Text>
+                        </Flex>
+                    )
+                })}
             </DialogBody>
             <DialogFooter>
                 <Button

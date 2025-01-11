@@ -223,7 +223,35 @@ export default function BasicInformation(){
                                         setLoading(false);
                                     }
                                 }}
-                            >Submiting</Button>
+                            >Submit</Button>
+                            <Button
+                                border={"1px solid black"}
+                                px={{ base: 5 }}
+                                fontWeight={"semibold"}
+                                loading={loading}
+                                loadingText={"Deleting"}
+                                bg={"red.600"}
+                                color={"white"}
+                                _hover={{
+                                    bg: "red"
+                                }}
+                                onClick={async () => {
+                                    setLoading(true);
+                                    try{
+                                        await fetch(`/api/delete/category?resto=${ID}&categoryId=${name}`, {
+                                            method: "DELETE"
+                                        });
+                                        console.log("sent")
+                                    }catch(error: any){
+                                        console.log("APP:", error);
+                                        setError(error.message)
+                                    }finally{
+                                        setLoading(false);
+                                    }
+                                }}
+                            >
+                                Delete Category
+                            </Button>
                     </DrawerFooter>
                     <DrawerCloseTrigger />
                 </DrawerContent>

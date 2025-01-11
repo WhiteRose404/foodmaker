@@ -14,8 +14,8 @@ export async function PATCH(req: NextRequest) {
     // Parse request body
     const body = await req.json();
 
-   const { searchParams } = new URL(req.url)
-   const restaurantId = searchParams.get('item') || "" // is actually itemId
+    const { searchParams } = new URL(req.url)
+    const restaurantId = searchParams.get('item') || "" // is actually itemId
 
     // Validate item id
     if (!mongoose.Types.ObjectId.isValid(restaurantId)) {

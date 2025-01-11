@@ -4,6 +4,7 @@ import { Box, Flex, Tabs, Grid, Text } from "@chakra-ui/react"
 import BasicInformation from "./basicInformation";
 import Categorie from "./categories"
 import Items from "./items"
+import { Suspense } from "react";
 
 
 const items = [
@@ -23,7 +24,9 @@ const items = [
 
 export default function(){
   return (
-    <Flex mt={{ base: 3}}>
+    <Flex mt={{ base: 3}}
+      as={Suspense}
+    >
       <Tabs.Root defaultValue="1" width="full">
         <Tabs.List as={Grid} gridTemplateColumns={"repeat(3, 1fr)"}>
           {items.map((item, index) => (
