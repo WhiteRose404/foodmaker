@@ -27,7 +27,7 @@ import {
 import FoodHeader from "./food-header";
 
 
-export default function ({ side=true, price='0.01', description, active=false, action, name, specialAdd=false,specialAdminAdd=false, image=Steak.src } : { specialAdd?: boolean, description?: string, side?: boolean, image?: any, specialAdminAdd?: boolean, name: string, action?: any, active?: boolean, price?: string | number }){
+export default function ({ customMessage="Add", side=true, price='0.01', description, active=false, action, name, specialAdd=false,specialAdminAdd=false, image=Steak.src } : { customMessage?:string, specialAdd?: boolean, description?: string, side?: boolean, image?: any, specialAdminAdd?: boolean, name: string, action?: any, active?: boolean, price?: string | number }){
     const [open, setOpen] = useState(false)
     return (
         <CardRoot overflow="hidden" flexDirection={side ? "row" : "column"} className="border border-[#eff0f6] rounded-2xl w-fit"
@@ -81,93 +81,11 @@ export default function ({ side=true, price='0.01', description, active=false, a
                             }}
                             fontWeight="semibold"
                         >
-                            {specialAdminAdd ? "NEW" : `$${price}`}
+                            {specialAdminAdd ? "NEW" : `$${Number(price).toFixed(2)}`}
                         </Text>
                         <FoodButton onClick={action} CustomIcon={specialAdminAdd ? GiShuttlecock : undefined}>
-                            {specialAdminAdd || specialAdd ? "Modify" : "Add"}
+                            {specialAdminAdd || specialAdd ? "Modify" : customMessage}
                         </FoodButton>
-                        {/* <DialogRoot size={"lg"} placement={"center"} open={open} onOpenChange={(e) => setOpen(e.open)}>
-                            <DialogTrigger asChild>
-                                <FoodButton onClick={() => setOpen(true)}>
-                                    Add
-                                </FoodButton>
-                            </DialogTrigger>
-                            <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle
-                                    as={Grid}
-                                    gridTemplateColumns={{
-                                        base: "120px 1fr"
-                                    }}
-                                    gap={2}
-                                >
-                                    <Image
-                                        src={image}
-                                        alt="Green double couch with wooden legs"
-                                        style={{
-                                            objectFit: "cover"
-                                        }}
-                                        className={`h-auto rounded-lg w-full`}
-                                    />
-                                    <Box>
-                                        <CardHeader />
-                                        <Text
-                                            fontWeight={"light"}
-                                            fontSize={"0.75rem"}
-                                        >
-                                            With a side of fried rice or supreme soy noodles, and steamed chi..
-                                        </Text>
-                                        <Text
-                                            fontSize={{
-                                                base: "1rem"
-                                            }}
-                                            fontWeight="semibold"
-                                        >
-                                            $2.50
-                                        </Text>
-                                    </Box>
-                                 </DialogTitle>
-                            </DialogHeader>
-                            <DialogBody>
-                                <Box>
-                                    <Text fontWeight={"semibold"}>Quantity</Text>
-                                    <Box
-                                        as={Flex}
-                                        flexDir={"column"}
-                                        gap={1}
-                                    >
-                                        <Text fontSize={"0.95rem"} fontWeight={"semibold"}>Special Instructions</Text>
-                                        <Textarea placeholder="Add Notes..." p={1} autoresize />
-                                    </Box>
-                                </Box>
-                            </DialogBody>
-                            <DialogFooter>
-                                <Button
-                                    onClick={() => setOpen(false)}
-                                    fontWeight={"bold"}
-                                    px={{
-                                        base: 3
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-                                    onClick={() =>{
-                                        setOpen(false)
-                                    }}
-                                    bg={"#FF006B"}
-                                    color={"white"}
-                                    fontWeight={"bold"}
-                                    px={{
-                                        base: 3
-                                    }}
-                                >
-                                    Add to Cart - {"$2.00"}
-                                </Button>
-                            </DialogFooter>
-                            <DialogCloseTrigger />
-                            </DialogContent>
-                        </DialogRoot> */}
                     </Flex>
                 </CardDescription>
             </CardBody>

@@ -4,20 +4,23 @@
 import { Container, Box } from "@chakra-ui/react";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
+import { useAppContext } from "@/utils/appContext";
 
 type LinkType = {value: string, link: string};
 
-const links:LinkType[] = [
-  { value: "Home", link: "/home"},
-  { value: "Menu", link: "/home/menu"},
-  { value: "Offers", link: "/home/offers"},
-]
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const { resto } = useAppContext()
+  const links:LinkType[] = [
+    { value: "Home", link: `/${resto._id}/home`},
+    { value: "Menu", link: `/${resto._id}/home/menu`},
+    { value: "Offers", link: `/${resto._id}/home/offers`},
+  ]
   return (
     <>
       <Box
@@ -35,7 +38,7 @@ export default function RootLayout({
           top={"0px"}
           zIndex={100}
         >
-            <Nav links={links}/>
+            <Nav links={links} />
       </Box>
       <Container
           position={"relative"}

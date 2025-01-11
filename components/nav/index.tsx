@@ -9,6 +9,7 @@ import {
   IconButton,
   Button,
   Icon,
+  Image
 } from '@chakra-ui/react'
 
 
@@ -18,12 +19,11 @@ import { RiAdminFill } from "react-icons/ri";
 
 
 import { useState } from 'react';
-import Image from "next/image";
+// import Image from "next/image";
 import { usePathname } from 'next/navigation'
 
-
 // Media
-import logo from "@/public/theme-logo.png";
+import Logo from "@/public/theme-logo.png";
 import emptyCart from "@/public/empty-cart.gif";
 
 // Componenet
@@ -40,10 +40,13 @@ import {
   DrawerTrigger
 } from "@/components/ui/drawer"
 import FoodHeader from '@/components/ui/food-header';
+import { useAppContext } from '@/utils/appContext';
+import FoodCard from '../ui/food-card';
+import messageformater from '@/utils/messageformater';
 
 type LinkType = {value: string, link: string};
 
-export default function WithSubnavigation({ admin=false, links }: {admin?: boolean, links: LinkType[]}) {
+export default function WithSubnavigation({ admin=false, links}: {admin?: boolean, links: LinkType[]}) {
   return (
     <Container
       maxW={{
@@ -53,20 +56,21 @@ export default function WithSubnavigation({ admin=false, links }: {admin?: boole
         base: 1
       }}
     >
-      <DesktopNav admin={admin} links={links}/>
+      <DesktopNav admin={admin} links={links} />
     </Container>
   )
 }
 
-const DesktopNav = ({ admin, links }: {admin: boolean, links: LinkType[]} )=>{
+const DesktopNav = ({ admin, links}: {admin: boolean, links: LinkType[]})=>{
   const [cartDrawer, setCartDrawer] = useState(false);
+  const { resto, items, setItems } = useAppContext();
   return (
     <Flex
         flexDir={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Image src={logo} alt="Logo of restaurnte" width={120}/>
+        <Image src={resto.logo || Logo.src} alt="Logo of restaurnte" width={120}/>
         <Flex
           as={"ul"}
           display={{
@@ -83,7 +87,7 @@ const DesktopNav = ({ admin, links }: {admin: boolean, links: LinkType[]} )=>{
         >
           <Links links={links} />
         </Flex>
-        <DrawerRoot open={cartDrawer}>
+        <DrawerRoot open={cartDrawer} size={"md"}>
           <DrawerBackdrop/>
           <DrawerTrigger asChild>
             <Button
@@ -116,7 +120,7 @@ const DesktopNav = ({ admin, links }: {admin: boolean, links: LinkType[]} )=>{
                   base: "bold"
                 }}
               >
-                  {admin ? "Admin":"$0.00"}
+                  {admin ? "Admin": (items.length <= 0) ? "$0.00": `$${(items.reduce((pre, item)=> pre+item.price, 0)).toFixed(2)}`}
               </Text>
             </Button>
           </DrawerTrigger>
@@ -128,18 +132,49 @@ const DesktopNav = ({ admin, links }: {admin: boolean, links: LinkType[]} )=>{
             </DrawerHeader>
             <DrawerBody
               as={Flex}
-              justifyContent={"center"}
+              justifyContent={items.length > 0 ? "flex-start" : "center"}
               alignItems={"center"}
               flexDir={"column"}
+              gap={2}
+              mt={2}
             >
-              <Image src={emptyCart} alt='empty Cart' />
-              <Text mt={{base: 5}} fontWeight={"extralight"}>Empty Cart</Text>
+              {items.length > 0 ? 
+                (
+                  <>
+                    {items.map((item: any)=>{
+                        return (
+                            <FoodCard key={item._id} name={item.name} price={item.price} description={item.description} image={item.logo} side={true}
+                                customMessage='Delete'
+                                action={()=>{
+                                  setItems(items.filter((value: any)=>item._id != value._id))
+                                }}    
+                            />
+                        )
+                    })}
+                  </> 
+                ) : (
+                  <>
+                    <Image src={emptyCart.src} alt='empty Cart' />
+                    <Text mt={{base: 5}} fontWeight={"extralight"}>Empty Cart</Text>
+                  </>
+                )
+              }
             </DrawerBody>
             <DrawerFooter>
-              {/* <DrawerActionTrigger asChild>
-                <Button variant="outline">Cancel</Button>
-              </DrawerActionTrigger>
-              <Button>Save</Button> */}
+              {items.length > 0 && (
+                  <Button
+                    w={"100%"}
+                    border={"1px solid black"}
+                    _hover={{
+                      bg: "blackAlpha.800",
+                      color: "white"
+                    }}
+                    onClick={()=>{
+                      const enrishMessage = messageformater(items, resto.table);
+                      console.log("message sent", enrishMessage);
+                    }}
+                  >CheckOut</Button>
+              )}
             </DrawerFooter>
             <DrawerCloseTrigger onClick={() => setCartDrawer(false)}/>
           </DrawerContent>
@@ -186,33 +221,9 @@ function Links({ links }: { links: LinkType[] }){
           href={link.link}
         >{link.value}</Link>
       ))}
-      {/* <Link
-        color={{
-          base: "#FF006B"
-        }}
-        href="/home"
-      >
-        Home
-      </Link>
-      <Link
-        href="/home/menu"
-      >Menu</Link>
-      <Link
-        href="/home/offers"
-      >Offer</Link> */}
     </>
   )
 }
-
-
-// const DesktopNav = () => {
-//   const linkColor = 'gray.600'
-//   const linkHoverColor = 'gray.800'
-//   const popoverContentBgColor = 'white'
-
-//   return (
-//   )
-// }
 
 interface NavItem {
   label: string
@@ -220,44 +231,3 @@ interface NavItem {
   children?: Array<NavItem>
   href?: string
 }
-
-const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: 'Inspiration',
-    children: [
-      {
-        label: 'Explore Design Work',
-        subLabel: 'Trending Design to inspire you',
-        href: '#',
-      },
-      {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
-        href: '#',
-      },
-    ],
-  },
-  {
-    label: 'Find Work',
-    children: [
-      {
-        label: 'Job Board',
-        subLabel: 'Find your dream design job',
-        href: '#',
-      },
-      {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
-        href: '#',
-      },
-    ],
-  },
-  {
-    label: 'Learn Design',
-    href: '#',
-  },
-  {
-    label: 'Hire Designers',
-    href: '#',
-  },
-]

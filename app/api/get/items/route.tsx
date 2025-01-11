@@ -12,8 +12,9 @@ export async function GET(req: NextRequest) {
 
     // Get URL parameters
     const searchParams = req.nextUrl.searchParams;
-    const restaurantId = searchParams.get('restaurantId');
+    const restaurantId = searchParams.get('resto');
     const categoryName = searchParams.get('category');
+    console.log("category", categoryName, restaurantId)
     const limit = parseInt(searchParams.get('limit') || '50');
     const page = parseInt(searchParams.get('page') || '1');
     const sortBy = searchParams.get('sortBy') || 'createdAt';
@@ -46,6 +47,7 @@ export async function GET(req: NextRequest) {
       }
 
       // Find the category
+      console.log("we are searching...")
       const category = restaurant.categories.find((cat: any) => cat.name === categoryName);
       if (!category) {
         return NextResponse.json(

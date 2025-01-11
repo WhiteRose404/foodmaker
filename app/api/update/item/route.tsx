@@ -38,10 +38,10 @@ export async function PATCH(req: NextRequest) {
     const updateFields: any = {};
 
     // Handle basic fields
-    if (body.name !== undefined) updateFields.name = body.name;
-    if (body.description !== undefined) updateFields.description = body.description;
-    if (body.image !== undefined) updateFields.image = body.image;
-    if (body.available !== undefined) updateFields.available = body.available;
+    if (body.name !== undefined || body.name != "") updateFields.name = body.name;
+    if (body.description !== undefined || body.description != "") updateFields.description = body.description;
+    if (body.image !== undefined || body.image != "") updateFields.image = body.image;
+    if (body.available !== undefined || body.available != "") updateFields.available = body.available;
 
     // Handle price with validation
     if (body.price !== undefined) {
@@ -55,7 +55,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // Handle sizes array
-    if (body.sizes !== undefined) {
+    if (body.sizes !== undefined || body.sizes.length !== 0) {
       if (!Array.isArray(body.sizes) || 
           !body.sizes.every((size :any) => size.name && typeof size.price === 'number')) {
         return NextResponse.json(
@@ -67,7 +67,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // Handle addons array
-    if (body.addons !== undefined) {
+    if (body.addons !== undefined || body.addons.length !== 0) {
       if (!Array.isArray(body.addons) || 
           !body.addons.every((addon: any) => addon.name && typeof addon.price === 'number')) {
         return NextResponse.json(
@@ -79,7 +79,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // Handle category change if provided
-    if (body.newCategoryName !== undefined) {
+    if (body.newCategoryName !== undefined || body.newCategoryName != "") {
       const session = await mongoose.startSession();
       session.startTransaction();
 
