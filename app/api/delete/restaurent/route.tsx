@@ -8,7 +8,6 @@ import mongoose from 'mongoose';
 // Delete Restaurant Endpoint
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
 ) {
   try {
     // Check authentication

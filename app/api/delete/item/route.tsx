@@ -7,7 +7,6 @@ import mongoose from 'mongoose';
 
 export async function DELETE(
     req: NextRequest,
-    { params }: { params: { id: string } }
   ) {
     try {
     //   const session = await auth();
