@@ -56,6 +56,8 @@ export default function Home() {
   });
   const [commentaire,setCommentaire] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [size, setSize] = useState([]);
+  const [addons, setAddons] = useState([]);
   const [open, setOpen] = useState(false);
   //
   const [category, setCategory] = useState([]);
@@ -209,7 +211,7 @@ export default function Home() {
                 })}
             </Grid>
         </Box>
-        <FoodDialog open={open} setOpen={setOpen} item={selectedItem} commentaire={commentaire} setCommentaire={setCommentaire} quantity={quantity} setQuantity={setQuantity}
+        <FoodDialog open={open} setOpen={setOpen} item={selectedItem} commentaire={commentaire} setCommentaire={setCommentaire} quantity={quantity} setQuantity={setQuantity} chossedSize={size} setSize={setSize}
             action={()=>{
                 const chossed = {...selectedItem};
                 chossed.quantity = quantity;
@@ -223,7 +225,7 @@ export default function Home() {
 }
 
 
-function FoodDialog({ open, setOpen, item, action, quantity, setQuantity, commentaire, setCommentaire}: any){
+function FoodDialog({ open, setOpen, item, action, quantity, setQuantity, commentaire, setCommentaire, chossedSize, setSize}: any){
     return (
         <DialogRoot size={"lg"} placement={"center"} open={open} onOpenChange={(e: any) => setOpen(e.open)}>
             <DialogContent>
@@ -315,7 +317,7 @@ function FoodDialog({ open, setOpen, item, action, quantity, setQuantity, commen
                     return (
                         <Flex
                             key={size.name}
-                            bg={"gray.400"}
+                            bg={size.name == chossedSize.name && size.price == chossedSize.price ? "blackAlpha.800" : "gray.400"}
                             flexDir={"column"}
                             px={{
                                 base: 3
@@ -332,7 +334,7 @@ function FoodDialog({ open, setOpen, item, action, quantity, setQuantity, commen
                                 bg: "blackAlpha.800",
                                 cursor: "pointer"
                             }}
-                            // onClick={()=> setSizes(sizes.filter(((value: any) => value.name != size.name && value.price != size.price)))}
+                            onClick={()=> setSize({name: size.name, size: size.price})}
                         >
                             <Text mr={"auto"}>{size.name}</Text>
                             <Text ml={"auto"}>+${size.price}</Text>
