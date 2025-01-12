@@ -587,7 +587,7 @@ function FileUploader({ fileName, setUrl, RaiseError, update } : { fileName: str
         setIsUploading(true);
         console.log("filename",fileName, update)
         const formData = new FormData();
-        const nameFile = update ? (new URL(fileName)).pathname.slice(1) : fileName;
+        const nameFile = update ? (fileName == "" ? fileName : (new URL(fileName)).pathname.slice(1)) : fileName;
         try {
             formData.append(nameFile, details.files[0])
             const res = await fetch(`/api/add/image?file=${nameFile}&update=${update}`, {
