@@ -108,7 +108,7 @@ const LuxuryLanding = () => {
                 px={8}
                 letterSpacing="wide"
               >
-                <Link className="px-8" href={"demo.dish.ma"} >Experience Demo</Link>
+                <Link className="px-8" href={"https://demo.dish.ma"} >Experience Demo</Link>
               </Button>
               
               <Button
