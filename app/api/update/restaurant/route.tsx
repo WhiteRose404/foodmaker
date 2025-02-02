@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { Types } from "mongoose"
-import dbConnect from '@/utils/database'
-import Restaurant from '@/models/restaurants'
+import { NextRequest, NextResponse } from 'next/server';
+import { Types } from "mongoose";
+import dbConnect from '@/utils/database';
+import Restaurant from '@/models/restaurants';
 
 export async function PUT(request: NextRequest) {
  try {

@@ -44,8 +44,6 @@ export default function SimpleLogin() {
       if (response.status === 200) {
         // Store the JWT token in localStorage or cookie (if using cookie, update accordingly)
         // localStorage.setItem('authToken', data.token);
-        // Redirect to a protected page, e.g., /dashboard
-        // window.location.href = '/admin';
         router.push('/admin');
       } else {
         setError(data.error || 'Something went wrong!');
