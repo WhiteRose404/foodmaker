@@ -12,11 +12,13 @@ import {
     MenuRoot,
     MenuTrigger,
 } from "@/components/ui/menu"
+import { useRouter, usePathname } from 'next/navigation';
 
 
-const LanguageSwitcher = () => {
-  const [currentLang, setCurrentLang] = useState('EN');
-  
+const LanguageSwitcher = ( { lang }: { lang: string } ) => {
+  const [currentLang, setCurrentLang] = useState(lang.toUpperCase());
+  const pathname = usePathname();
+  const route = useRouter();
   const languages = [
     { code: 'EN', label: 'English' },
     { code: 'FR', label: 'Français' },
@@ -25,7 +27,9 @@ const LanguageSwitcher = () => {
 
   const handleLanguageChange = (langCode: string) => {
     setCurrentLang(langCode);
-    // Add your language change logic here
+    const pathFilter = pathname.split("/");
+    pathFilter[1] = langCode.toLowerCase();
+    route.push(pathFilter.join("/"));
   };
 
   return (

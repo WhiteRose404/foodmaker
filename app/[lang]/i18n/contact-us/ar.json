@@ -1,0 +1,56 @@
+{
+    "brand": "DISH.MA",
+    "title": "تواصل معنا",
+    "description": "حوّل تجربة تناول الطعام إلى رحلة سلسة من الأناقة الرقمية",
+    "form": {
+        "labels": {
+            "firstname": "الاسم الأول",
+            "lastname": "اسم العائلة",
+            "business": "اسم المطعم / الفندق",
+            "email": "البريد الإلكتروني",
+            "message": "الرسالة"
+        },
+        "placeholders": {
+            "firstname": "يوسف",
+            "lastname": "العتيبي",
+            "business": "المذاق الرفيع",
+            "email": "email@example.com",
+            "message": "أخبرنا عن مؤسستك..."
+        }
+    },
+    "cordination": {
+        "location": {
+            "label": "موقعنا",
+            "value": "الرباط، المغرب"
+        },
+        "email": {
+            "label": "البريد الإلكتروني",
+            "value": "contact@dish.ma"
+        },
+        "phone": {
+            "label": "رقم الهاتف",
+            "value": "+212 (691) 829265"
+        },
+        "hours": {
+            "label": "ساعات العمل",
+            "value": "الإثنين - الجمعة: 9:00 - 18:00"
+        }
+    },
+    "messages": {
+        "success": {
+            "title": "تم الإرسال!",
+            "description": "سنتواصل معك قريبًا."
+        },
+        "error": {
+            "title": "خطأ",
+            "description": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+        }
+    },
+    "validation": {
+        "required": "هذا الحقل مطلوب",
+        "messageTooShort": "الرسالة قصيرة جدًا"
+    },
+    "button": "إرسال الرسالة",
+    "submitting": "جاري الإرسال...",
+    "rights": "© 2025 Dish Premium. جميع الحقوق محفوظة."
+}

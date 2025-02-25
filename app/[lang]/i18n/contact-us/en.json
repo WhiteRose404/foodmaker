@@ -1,0 +1,56 @@
+{
+    "brand": "DISH.MA",
+    "title": "Connect With Us",
+    "description": "Transform your dining experience into a seamless journey of digital elegance",
+    "form": {
+        "labels": {
+            "firstname": "First Name",
+            "lastname": "Last Name",
+            "business": "Restaurant / Hotel Name",
+            "email": "Email",
+            "message": "Message"
+        },
+        "placeholders": {
+            "firstname": "Ahmed",
+            "lastname": "Tahiri",
+            "business": "Le Gourmet",
+            "email": "email@example.com",
+            "message": "Tell us about your establishment..."
+        }
+    },
+    "cordination": {
+        "location": {
+            "label": "Our Location",
+            "value": "Rabat, Morocco"
+        },
+        "email": {
+            "label": "Email",
+            "value": "contact@dish.ma"
+        },
+        "phone": {
+            "label": "Phone Number",
+            "value": "+212 (691) 829265"
+        },
+        "hours": {
+            "label": "Hours",
+            "value": "Monday - Friday: 9:00 - 18:00"
+        }
+    },
+    "messages": {
+        "success": {
+            "title": "Error",
+            "description": "We'll get back to you soon."
+        },
+        "error": {
+            "title": "Message sent!",
+            "description": "Something went wrong. Please try again."
+        }
+    },
+    "validation": {
+        "required": "This field is required",
+        "messageTooShort": "Message is too short"
+    },
+    "submitting": "Sending...",
+    "button": "Send Message",
+    "rights": "© 2025 Dish Premium. All rights reserved."
+}

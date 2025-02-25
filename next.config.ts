@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // Basic redirect
+      {
+        source: '/',
+        destination: '/fr',
+        permanent: true,
+      }
+    ]
+  },
 };
 
 

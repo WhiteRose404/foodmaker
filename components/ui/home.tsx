@@ -7,7 +7,8 @@ import LanguageSwitcher from '@/components/ui/language';
 import Link from 'next/link';
 
 
-const LuxuryLanding = () => {
+const LuxuryLanding = ({ dict, lang } : any) => { 
+  console.log("dict",dict);
   return (
     <Flex 
       minH="100vh" 
@@ -17,9 +18,10 @@ const LuxuryLanding = () => {
       overflow="hidden"
       justify={"center"}
       alignItems={"center"}
+      dir={lang.toLowerCase() === "ar" ? "rtl" : "ltr"}
     >
       <Box position="absolute" top={4} right={4} zIndex={30}>
-        <LanguageSwitcher />
+        <LanguageSwitcher lang={lang} />
       </Box>
       {/* Subtle animated background pattern */}
       <Box 
@@ -66,7 +68,7 @@ const LuxuryLanding = () => {
       />
 
       <Container position={"relative"} maxW="7xl" py={20} zIndex={10}>
-        <Flex direction={{ base: 'column', lg: 'row' }} align="center" justify="space-between" gap={10}>
+        <Flex direction={{ base: 'column' , lg: 'row' }} align="center" justify="space-between" gap={10}>
           <Box flex="1">
             <Heading 
               as="h1" 
@@ -75,7 +77,7 @@ const LuxuryLanding = () => {
               letterSpacing="wider"
               mb={6}
             >
-              DISH.MA
+              {dict.brand}
             </Heading>
             
             <Text 
@@ -86,7 +88,7 @@ const LuxuryLanding = () => {
               maxW="600px"
               lineHeight="tall"
             >
-              Elevating the art of fine dining through seamless digital experiences
+                {dict.title}
             </Text>
             
             <Text 
@@ -95,7 +97,7 @@ const LuxuryLanding = () => {
               mb={12}
               maxW="500px"
             >
-              Curated digital menu solutions for distinguished establishments that define culinary excellence
+                {dict.description}
             </Text>
 
             <Flex gapX={6} gapY={3} flexWrap="wrap">
@@ -108,7 +110,7 @@ const LuxuryLanding = () => {
                 px={8}
                 letterSpacing="wide"
               >
-                <Link className="px-8" href={"https://demo.dish.ma"} >Experience Demo</Link>
+                <Link className="px-8" href={"https://demo.dish.ma"} >{dict.buttons.demo}</Link>
               </Button>
               
               <Button
@@ -118,7 +120,7 @@ const LuxuryLanding = () => {
                 size="lg"
                 letterSpacing="wide"
               >
-                <Link className="px-8" href={"/contact-us"} >Connect With Us</Link>
+                <Link className="px-8" href={`/${lang}/contact-us`} >{dict.buttons.contact}</Link>
               </Button>
             </Flex>
           </Box>
@@ -163,7 +165,7 @@ const LuxuryLanding = () => {
         fontSize="sm"
         zIndex={50}
       >
-        © 2025 Dish Premium. All rights reserved.
+        {dict.rights}
       </Box>
     </Flex>
   );

@@ -1,0 +1,56 @@
+{
+    "brand": "DISH.MA",
+    "title": "Connectez-vous avec nous",
+    "description": "Transformez votre expérience culinaire en un voyage fluide d’élégance numérique",
+    "form": {
+        "labels": {
+            "firstname": "Prénom",
+            "lastname": "Nom de famille",
+            "business": "Nom du restaurant / Hôtel",
+            "email": "E-mail",
+            "message": "Message"
+        },
+        "placeholders": {
+            "firstname": "Karim",
+            "lastname": "Benki",
+            "business": "Le Délice",
+            "email": "email@example.com",
+            "message": "Parlez-nous de votre établissement..."
+        }
+    },
+    "cordination": {
+        "location": {
+            "label": "Notre emplacement",
+            "value": "Rabat, Maroc"
+        },
+        "email": {
+            "label": "E-mail",
+            "value": "contact@dish.ma"
+        },
+        "phone": {
+            "label": "Numéro de téléphone",
+            "value": "+212 (691) 829265"
+        },
+        "hours": {
+            "label": "Horaires",
+            "value": "Lundi - Vendredi : 9:00 - 18:00"
+        }
+    },
+    "messages": {
+        "success": {
+            "title": "Message envoyé!",
+            "description": "Nous vous répondrons bientôt."
+        },
+        "error": {
+            "title": "Erreur",
+            "description": "Une erreur s'est produite. Veuillez réessayer."
+        }
+    },
+    "validation": {
+        "required": "Ce champ est requis",
+        "messageTooShort": "Le message est trop court"
+    },
+    "button": "Envoyer le message",
+    "submitting": "Envoi en cours...",
+    "rights": "© 2025 Dish Premium. Tous droits réservés."
+}
