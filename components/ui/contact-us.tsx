@@ -18,6 +18,8 @@ import {
 import LanguageSwitcher from '@/components/ui/language';
 import { toaster, Toaster } from '@/components/ui/toaster';
 import { Button } from './button';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   firstname: string;
@@ -148,7 +150,7 @@ const ContactPage = ({ dict, lang } : any) => {
       setIsSubmitting(false);
     }
   };
-
+  const route = useRouter();
   return (
     <Flex 
       justifyContent={"center"}
@@ -191,6 +193,7 @@ const ContactPage = ({ dict, lang } : any) => {
                   fontWeight="light" 
                   letterSpacing="wider"
                   mb={4}
+                  onClick={()=>route.push(`/${lang}`)}
                 >
                   {dict.brand}
                 </Heading>
@@ -208,12 +211,16 @@ const ContactPage = ({ dict, lang } : any) => {
                   <Text fontSize="md" letterSpacing="wide">{dict.cordination.location.value}</Text>
                 </Box>
 
-                <Box>
+                <Box
+                  onClick={()=>route.push(`mailto:contact@dish.ma`)}
+                >
                   <Text fontSize="sm" color="whiteAlpha.600" mb={1}>{dict.cordination.email.label}</Text>
                   <Text fontSize="md" letterSpacing="wide">{dict.cordination.email.value}</Text>
                 </Box>
 
-                <Box>
+                <Box
+                  onClick={()=>route.push("tel:+212691829265")}
+                >
                   <Text fontSize="sm" color="whiteAlpha.600" mb={1}>{dict.cordination.phone.label}</Text>
                   <Text fontSize="md" letterSpacing="wide" dir='ltr'>{dict.cordination.phone.value}</Text>
                 </Box>
